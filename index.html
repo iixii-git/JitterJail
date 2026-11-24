@@ -19,26 +19,24 @@
       color: #222;
     }
 
-    /* Layout mit linkem Menü und Hauptinhalt */
+    /* Hauptinhalt zentriert */
     .page-layout {
-      display: flex;
-      align-items: flex-start;
-      gap: 36px;
-      max-width: 940px;
+      max-width: 720px;
       margin: 30px auto;
       padding: 0 15px 140px 15px;
     }
 
-    /* Schlankes 4-Punkte-Menü links */
+    /* Schlankes 4-Punkte-Menü fest am linken Bildschirmrand */
     .side-nav {
-      width: 170px;
-      flex-shrink: 0;
-      position: sticky;
+      position: fixed;
       top: 30px;
+      left: 20px;
+      width: 170px;
       background-color: #f6f7f9;
       border: 1px solid #e0e4e8;
       border-radius: 12px;
       padding: 12px 8px;
+      z-index: 400;
     }
     .side-nav ul {
       list-style: none;
@@ -62,12 +60,6 @@
     .side-nav a:focus {
       background-color: #e9edf2;
       color: #111;
-    }
-
-    .content-column {
-      flex: 1;
-      min-width: 0;
-      max-width: 720px;
     }
 
     .banner {
@@ -185,18 +177,25 @@
       color: #666;
     }
 
+    /* Mittelgroße Bildschirme: Abstand halten, damit nichts überlappt */
+    @media (max-width: 1140px) {
+      .page-layout {
+        margin-left: 215px;
+        margin-right: 20px;
+      }
+    }
+
     /* Mobile Ansicht: Menü horizontal oben */
     @media (max-width: 768px) {
       .page-layout {
-        flex-direction: column;
-        gap: 20px;
-        margin-top: 16px;
+        margin: 16px auto;
       }
       .side-nav {
         position: static;
         width: 100%;
         box-sizing: border-box;
         padding: 8px;
+        margin-bottom: 20px;
       }
       .side-nav ul {
         flex-direction: row;
