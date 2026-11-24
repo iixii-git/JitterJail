@@ -6,7 +6,7 @@
   <title>Steady-Bridge – Ergonomischer Maus-Adapter</title>
   <script
     type="module"
-    src="https://unpkg.com"
+    src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"
   ></script>
   <style>
     body {
@@ -39,7 +39,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.65);
+      background: rgba(0, 0, 0, 0.55);
       z-index: 1000;
       align-items: center;
       justify-content: center;
@@ -48,16 +48,13 @@
     .modal-overlay.open {
       display: flex;
     }
-    /* Ko-fi Fenster in Neon-Leuchtfarbe */
     .modal-box {
-      background: #f4ff00;
-      color: #111;
-      border: 3px solid #111;
+      background: #fff;
       max-width: 440px;
       width: 100%;
       padding: 25px;
-      border-radius: 14px;
-      box-shadow: 0 0 35px rgba(244, 255, 0, 0.85), 0 10px 30px rgba(0, 0, 0, 0.4);
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
       text-align: center;
       position: relative;
     }
@@ -67,34 +64,22 @@
       right: 14px;
       background: none;
       border: none;
-      font-size: 24px;
-      font-weight: bold;
+      font-size: 22px;
       cursor: pointer;
-      color: #111;
+      color: #666;
     }
     .kofi-btn {
       display: inline-block;
       margin-top: 15px;
-      padding: 12px 24px;
-      background-color: #111;
-      color: #f4ff00;
+      padding: 12px 22px;
+      background-color: #29abe0;
+      color: #fff;
       text-decoration: none;
       font-weight: bold;
       border-radius: 9999px;
-      transition: transform 0.15s ease;
     }
     .kofi-btn:hover {
-      background-color: #2b2b2b;
-      transform: scale(1.03);
-    }
-    .later-link {
-      background: none;
-      border: none;
-      color: #222;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: underline;
-      font-size: 0.9em;
+      background-color: #1e96c8;
     }
     footer {
       margin-top: 50px;
@@ -140,11 +125,11 @@
       <p>
         <strong>Steady-Bridge</strong> ist komplett kostenlos. Während die Installation läuft: Wenn Ihnen oder Ihren Angehörigen dieses Tool hilft, freue ich mich sehr über einen kleinen Kaffee!
       </p>
-      <a href="https://ko-fi.com" target="_blank" rel="noopener" class="kofi-btn">
+      <a href="https://ko-fi.com/steadybridge" target="_blank" rel="noopener" class="kofi-btn">
         ☕ Auf Ko-fi unterstützen
       </a>
       <div style="margin-top: 14px;">
-        <button id="later-btn" class="later-link">
+        <button id="later-btn" style="background: none; border: none; color: #777; cursor: pointer; text-decoration: underline; font-size: 0.9em;">
           Weiter zur Installation
         </button>
       </div>
