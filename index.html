@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Steady-Bridge – Ergonomischer Maus-Adapter</title>
-  <script type="module" src="https://unpkg.com"></script>
+  <script
+    type="module"
+    src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"
+  ></script>
   <style>
     body {
       font-family: sans-serif;
@@ -20,9 +23,6 @@
       border-radius: 10px;
       margin-bottom: 20px;
       display: block;
-    }
-    esp-web-install-button:not(:defined) span {
-      display: none;
     }
     .corner-mouse {
       position: fixed;
@@ -101,12 +101,13 @@
   <h1>Steady-Bridge</h1>
   <p>Schließen Sie Ihren M5Stamp S3 per USB-Kabel an und installieren Sie die Firmware direkt über den Browser (Chrome oder Edge):</p>
 
+  <!-- Der Web-Flasher-Button -->
   <esp-web-install-button id="flash-btn" manifest="./manifest.json">
     <span slot="unsupported" style="color: #b00020; font-weight: bold;">
       ⚠️ Bitte öffnen Sie diese Seite am PC mit Google Chrome oder Microsoft Edge, um das Gerät zu installieren.
     </span>
     <span slot="not-allowed" style="color: #b00020; font-weight: bold;">
-      ⚠️ Bitte rufen Sie diese Seite über eine gesicherte HTTPS-Verbindung auf.
+      ⚠️ Bitte rufen Sie diese Seite über eine gesicherte HTTPS-Verbindung (oder localhost) auf.
     </span>
   </esp-web-install-button>
 
@@ -116,6 +117,7 @@
     class="corner-mouse"
   >
 
+  <!-- Spenden-Popup beim Klick auf Connect -->
   <div id="donate-modal" class="modal-overlay" role="dialog" aria-modal="true">
     <div class="modal-box">
       <button class="modal-close" id="close-modal" aria-label="Schließen">&times;</button>
@@ -123,7 +125,7 @@
       <p>
         <strong>Steady-Bridge</strong> ist komplett kostenlos. Während die Installation läuft: Wenn Ihnen oder Ihren Angehörigen dieses Tool hilft, freue ich mich sehr über einen kleinen Kaffee!
       </p>
-      <a href="https://ko-fi.com" target="_blank" rel="noopener" class="kofi-btn">
+      <a href="https://ko-fi.com/steadybridge" target="_blank" rel="noopener" class="kofi-btn">
         ☕ Auf Ko-fi unterstützen
       </a>
       <div style="margin-top: 14px;">
