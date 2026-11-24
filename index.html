@@ -38,12 +38,11 @@
     .modal-overlay {
       display: none;
       position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.55);
+      bottom: 145px; /* Genau über dem 110px hohen Maus-Bild */
+      right: 18px;
       z-index: 1000;
-      align-items: center;
-      justify-content: center;
-      padding: 15px;
+      max-width: 340px;
+      width: calc(100% - 36px);
     }
     .modal-overlay.open {
       display: flex;
