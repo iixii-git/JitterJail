@@ -48,13 +48,15 @@
     .modal-overlay.open {
       display: flex;
     }
-    .modal-box {
-      background: #fff;
+	.modal-box {
+      background: #f4ff00;
+      color: #111;
+      border: 3px solid #111;
       max-width: 440px;
       width: 100%;
       padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      border-radius: 14px;
+      box-shadow: 0 0 35px rgba(244, 255, 0, 0.85), 0 10px 30px rgba(0, 0, 0, 0.4);
       text-align: center;
       position: relative;
     }
@@ -64,22 +66,34 @@
       right: 14px;
       background: none;
       border: none;
-      font-size: 22px;
+      font-size: 24px;
+      font-weight: bold;
       cursor: pointer;
-      color: #666;
+      color: #111;
     }
     .kofi-btn {
       display: inline-block;
       margin-top: 15px;
-      padding: 12px 22px;
-      background-color: #29abe0;
-      color: #fff;
+      padding: 12px 24px;
+      background-color: #111;
+      color: #f4ff00;
       text-decoration: none;
       font-weight: bold;
       border-radius: 9999px;
+      transition: transform 0.15s ease;
     }
     .kofi-btn:hover {
-      background-color: #1e96c8;
+      background-color: #2b2b2b;
+      transform: scale(1.03);
+    }
+    .later-link {
+      background: none;
+      border: none;
+      color: #222;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline;
+      font-size: 0.9em;
     }
     footer {
       margin-top: 50px;
