@@ -38,10 +38,20 @@
       padding: 12px 8px;
       z-index: 400;
     }
+    .nav-mouse {
+      display: block;
+      width: 100%;
+      max-width: 130px;
+      height: auto;
+      margin: 4px auto 12px auto;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
     .side-nav ul {
       list-style: none;
       margin: 0;
-      padding: 0;
+      padding: 10px 0 0 0;
+      border-top: 1px solid #e0e4e8;
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -99,21 +109,10 @@
     .install-box h2 {
       margin-top: 0;
     }
-    .corner-mouse {
-      position: fixed;
-      bottom: 18px;
-      right: 18px;
-      width: 110px;
-      height: auto;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      z-index: 500;
-      pointer-events: none;
-    }
     .modal-overlay {
       display: none;
       position: fixed;
-      bottom: 145px; /* Genau über dem 110px hohen Maus-Bild */
+      bottom: 18px;
       right: 18px;
       z-index: 1000;
       max-width: 340px;
@@ -185,7 +184,7 @@
       }
     }
 
-    /* Mobile Ansicht: Menü horizontal oben */
+    /* Mobile Ansicht: Menü horizontal oben mit kompaktem Mausbild */
     @media (max-width: 768px) {
       .page-layout {
         margin: 16px auto;
@@ -194,10 +193,21 @@
         position: static;
         width: 100%;
         box-sizing: border-box;
-        padding: 8px;
+        padding: 8px 10px;
         margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .nav-mouse {
+        width: 44px;
+        margin: 0;
+        flex-shrink: 0;
       }
       .side-nav ul {
+        flex: 1;
+        padding-top: 0;
+        border-top: none;
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: space-around;
@@ -212,8 +222,13 @@
 <body>
 
   <div class="page-layout">
-    <!-- Schlankes 4-Punkte-Menü -->
+    <!-- Schlankes 4-Punkte-Menü mit Mausbild im Kopf -->
     <nav class="side-nav" aria-label="Hauptnavigation">
+      <img
+        src="./Steadybridge_Mouse_small.png"
+        alt="Steady-Bridge M5Stamp S3 Maus-Adapter"
+        class="nav-mouse"
+      >
       <ul>
         <li><a href="#uebersicht">Übersicht</a></li>
         <li><a href="#vorteile">Vorteile</a></li>
@@ -281,12 +296,6 @@
       </footer>
     </div>
   </div>
-
-  <img 
-    src="./Steadybridge_Mouse_small.png" 
-    alt="Steady-Bridge M5Stamp S3 Maus-Adapter" 
-    class="corner-mouse"
-  >
 
   <!-- Spenden-Popup beim Klick auf Connect -->
   <div id="donate-modal" class="modal-overlay" role="dialog" aria-modal="true">
