@@ -9,14 +9,110 @@
     src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"
   ></script>
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: sans-serif;
-      max-width: 720px;
-      margin: 30px auto;
-      padding: 0 15px 140px 15px;
+      margin: 0;
+      padding: 30px 15px 140px 15px;
       line-height: 1.6;
       color: #222;
     }
+
+    /* Layout: Linkes Menü + Hauptinhalt */
+    .page-layout {
+      max-width: 980px;
+      margin: 0 auto;
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+    }
+
+    /* Linkes Menü */
+    .sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 30px;
+      background-color: #f6f7f9;
+      border: 1px solid #e0e4e8;
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .sidebar-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #666;
+      margin: 4px 8px 12px 8px;
+      font-weight: bold;
+    }
+    .nav-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .nav-btn {
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: #222;
+      cursor: pointer;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+    .nav-btn:hover {
+      background-color: #e6eaef;
+    }
+    .nav-btn.active {
+      background-color: #111;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    /* Hauptbereich */
+    .content-wrapper {
+      flex: 1;
+      max-width: 720px;
+      min-width: 0;
+    }
+    .tab-section {
+      display: none;
+    }
+    .tab-section.active {
+      display: block;
+    }
+
+    /* Mobile Ansicht */
+    @media (max-width: 800px) {
+      .page-layout {
+        flex-direction: column;
+        gap: 20px;
+      }
+      .sidebar {
+        width: 100%;
+        position: static;
+      }
+      .nav-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .nav-list li {
+        flex: 1 1 45%;
+      }
+      .nav-btn {
+        text-align: center;
+      }
+    }
+
     .banner {
       width: 100%;
       height: auto;
@@ -135,103 +231,94 @@
 </head>
 <body>
 
-  <img 
-    src="./Steadymouse_banner_small.png" 
-    alt="Steady-Bridge Banner" 
-    class="banner"
-  >
+  <div class="page-layout">
 
-  <main>
-    <h1>Ruhige und präzise Maussteuerung trotz Tremor</h1>
+    <!-- Linkes Menü mit 4 Punkten -->
+    <nav class="sidebar" aria-label="Hauptmenü">
+      <div class="sidebar-title">Menü</div>
+      <ul class="nav-list">
+        <li><button class="nav-btn active" data-target="tab-start">Übersicht & Install</button></li>
+        <li><button class="nav-btn" data-target="tab-anleitung">Anleitung</button></li>
+        <li><button class="nav-btn" data-target="tab-faq">Häufige Fragen</button></li>
+        <li><button class="nav-btn" data-target="tab-kontakt">Kontakt</button></li>
+      </ul>
+    </nav>
 
-    <p>
-      Für Menschen mit Parkinson oder essenziellem Tremor kann die tägliche Arbeit am Computer schnell zur Geduldsprobe werden. <strong>Steady-Mouse</strong> gibt Ihnen die Kontrolle zurück: Die kompakte Hardwarebrücke wird einfach zwischen Ihrer vorhandenen Bluetooth-Maus und Ihrem Endgerät geschaltet und filtert tremorbedingtes Zittern zuverlässig und in Echtzeit heraus.
-    </p>
+    <!-- Hauptinhalt -->
+    <div class="content-wrapper">
+      <img
+        src="./Steadymouse_banner_small.png"
+        alt="Steady-Bridge Banner"
+        class="banner"
+      >
 
-    <h2>Ihre Vorteile auf einen Blick</h2>
-    <ul class="benefits">
-      <li>
-        <strong>6 individuelle Dämpfungsmodi:</strong> Jeder Tremor ist anders – und oft sogar tagesformabhängig. Wählen Sie direkt am Gerät aus sechs fein abgestimmten Stufen genau die Dämpfung, die Ihnen gerade das angenehmste und präziseste Arbeiten ermöglicht.
-      </li>
-      <li>
-        <strong>Einfache Plug-and-Play-Lösung:</strong> Keine komplizierte Einrichtung, keine Software-Installation und keine Treiber nötig. Verbinden Sie die Hardwarebrücke einfach mit Ihrer Maus und Ihrem Gerät – Steady-Mouse ist sofort einsatzbereit.
-      </li>
-      <li>
-        <strong>Maximale Plattform-Freiheit:</strong> Egal ob am Arbeitsplatz oder zu Hause – Steady-Mouse funktioniert nahtlos unter <strong>Windows, Linux und iOS</strong>.
-      </li>
-      <li>
-        <strong>Ihre gewohnte Maus bleibt:</strong> Sie müssen sich nicht an eine klobige oder ungewohnte Spezialmaus gewöhnen. Nutzen Sie einfach Ihre bevorzugte Bluetooth-Maus weiter – nur eben spürbar ruhiger.
-      </li>
-    </ul>
+      <main>
+        <!-- Punkt 1: Bisherige Startseite -->
+        <div id="tab-start" class="tab-section active">
+          <h1>Ruhige und präzise Maussteuerung trotz Tremor</h1>
 
-    <p>
-      Ob beim Schreiben von E-Mails, beim Surfen im Internet oder im Berufsalltag: Mit Steady-Mouse bedienen Sie Ihren Computer wieder entspannt, treffsicher und selbstbestimmt.
-    </p>
+          <p>
+            Für Menschen mit Parkinson oder essenziellem Tremor kann die tägliche Arbeit am Computer schnell zur Geduldsprobe werden. <strong>Steady-Mouse</strong> gibt Ihnen die Kontrolle zurück: Die kompakte Hardwarebrücke wird einfach zwischen Ihrer vorhandenen Bluetooth-Maus und Ihrem Endgerät geschaltet und filtert tremorbedingtes Zittern zuverlässig und in Echtzeit heraus.
+          </p>
 
-    <!-- Bereich für die Firmware-Installation -->
-    <section class="install-box">
-      <h2>Firmware direkt im Browser installieren</h2>
-      <p>
-        Schließen Sie Ihren <strong>M5Stamp S3</strong> per USB-Kabel an und installieren Sie die Firmware direkt über den Browser (Chrome oder Edge):
-      </p>
+          <h2>Ihre Vorteile auf einen Blick</h2>
+          <ul class="benefits">
+            <li>
+              <strong>6 individuelle Dämpfungsmodi:</strong> Jeder Tremor ist anders – und oft sogar tagesformabhängig. Wählen Sie direkt am Gerät aus sechs fein abgestimmten Stufen genau die Dämpfung, die Ihnen gerade das angenehmste und präziseste Arbeiten ermöglicht.
+            </li>
+            <li>
+              <strong>Einfache Plug-and-Play-Lösung:</strong> Keine komplizierte Einrichtung, keine Software-Installation und keine Treiber nötig. Verbinden Sie die Hardwarebrücke einfach mit Ihrer Maus und Ihrem Gerät – Steady-Mouse ist sofort einsatzbereit.
+            </li>
+            <li>
+              <strong>Maximale Plattform-Freiheit:</strong> Egal ob am Arbeitsplatz oder zu Hause – Steady-Mouse funktioniert nahtlos unter <strong>Windows, Linux und iOS</strong>.
+            </li>
+            <li>
+              <strong>Ihre gewohnte Maus bleibt:</strong> Sie müssen sich nicht an eine klobige oder ungewohnte Spezialmaus gewöhnen. Nutzen Sie einfach Ihre bevorzugte Bluetooth-Maus weiter – nur eben spürbar ruhiger.
+            </li>
+          </ul>
 
-      <!-- Der Web-Flasher-Button -->
-      <esp-web-install-button id="flash-btn" manifest="./manifest.json">
-        <span slot="unsupported" style="color: #b00020; font-weight: bold;">
-          ⚠️ Bitte öffnen Sie diese Seite am PC mit Google Chrome oder Microsoft Edge, um das Gerät zu installieren.
-        </span>
-        <span slot="not-allowed" style="color: #b00020; font-weight: bold;">
-          ⚠️ Bitte rufen Sie diese Seite über eine gesicherte HTTPS-Verbindung (oder localhost) auf.
-        </span>
-      </esp-web-install-button>
-    </section>
-  </main>
+          <p>
+            Ob beim Schreiben von E-Mails, beim Surfen im Internet oder im Berufsalltag: Mit Steady-Mouse bedienen Sie Ihren Computer wieder entspannt, treffsicher und selbstbestimmt.
+          </p>
 
-  <img 
-    src="./Steadybridge_Mouse_small.png" 
-    alt="Steady-Bridge M5Stamp S3 Maus-Adapter" 
-    class="corner-mouse"
-  >
+          <!-- Bereich für die Firmware-Installation -->
+          <section class="install-box">
+            <h2>Firmware direkt im Browser installieren</h2>
+            <p>
+              Schließen Sie Ihren <strong>M5Stamp S3</strong> per USB-Kabel an und installieren Sie die Firmware direkt über den Browser (Chrome oder Edge):
+            </p>
 
-  <!-- Spenden-Popup beim Klick auf Connect -->
-  <div id="donate-modal" class="modal-overlay" role="dialog" aria-modal="true">
-    <div class="modal-box">
-      <button class="modal-close" id="close-modal" aria-label="Schließen">×</button>
-      <h3 style="margin-top: 0;">☕ Projekt unterstützen</h3>
-      <p>
-        <strong>Steady-Mouse</strong> ist komplett kostenlos. Wenn Ihnen oder Ihren Angehörigen dieses Tool hilft, unterstützen Sie bitte dieses Projekt.
-      </p>
-      <a href="https://ko-fi.com/steadybridge" target="_blank" rel="noopener" class="kofi-btn">
-        Jetzt spenden
-      </a>
-      <div style="margin-top: 14px;">
-        <button id="later-btn" style="background: none; border: none; color: #777; cursor: pointer; text-decoration: underline; font-size: 0.9em;">
-           
-        </button>
-      </div>
-    </div>
-  </div>
+            <!-- Der Web-Flasher-Button -->
+            <esp-web-install-button id="flash-btn" manifest="./manifest.json">
+              <span slot="unsupported" style="color: #b00020; font-weight: bold;">
+                ⚠️ Bitte öffnen Sie diese Seite am PC mit Google Chrome oder Microsoft Edge, um das Gerät zu installieren.
+              </span>
+              <span slot="not-allowed" style="color: #b00020; font-weight: bold;">
+                ⚠️ Bitte rufen Sie diese Seite über eine gesicherte HTTPS-Verbindung (oder localhost) auf.
+              </span>
+            </esp-web-install-button>
+          </section>
+        </div>
 
-  <footer>
-    <a href="impressum.html">Impressum & Datenschutz</a>
-  </footer>
+        <!-- Punkt 2: Anleitung -->
+        <div id="tab-anleitung" class="tab-section">
+          <h1>Anleitung</h1>
+          <p>Hier können Sie Schritt für Schritt erklären, wie der M5Stamp S3 mit der Bluetooth-Maus und dem Computer gekoppelt wird und wie man zwischen den 6 Dämpfungsmodi wechselt.</p>
+        </div>
 
-  <script>
-    const flashBtn = document.getElementById("flash-btn");
-    const modal = document.getElementById("donate-modal");
-    const closeModal = document.getElementById("close-modal");
-    const laterBtn = document.getElementById("later-btn");
+        <!-- Punkt 3: Häufige Fragen -->
+        <div id="tab-faq" class="tab-section">
+          <h1>Häufige Fragen (FAQ)</h1>
+          <p>Hier ist Platz für häufige Fragen – zum Beispiel welche Bluetooth-Mäuse kompatibel sind oder was bei Verbindungsproblemen hilft.</p>
+        </div>
 
-    flashBtn.addEventListener("click", () => {
-      modal.classList.add("open");
-    });
+        <!-- Punkt 4: Kontakt -->
+        <div id="tab-kontakt" class="tab-section">
+          <h1>Kontakt & Support</h1>
+          <p>Hier können Sie Ihre Kontaktmöglichkeiten, einen Link zu GitHub oder Hinweise für Feedback eintragen.</p>
+        </div>
+      </main>
 
-    closeModal.addEventListener("click", () => modal.classList.remove("open"));
-    laterBtn.addEventListener("click", () => modal.classList.remove("open"));
-    modal.addEventListener("click", (e) => {
-      if (e.target === modal) modal.classList.remove("open");
-    });
-  </script>
-
-</body>
-</html>
+      <footer>
+        <a href="impressum.html">Impressum & Datenschutz</a>
+      </footer>
