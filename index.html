@@ -4,16 +4,27 @@
   <meta charset="UTF-8">
   <title>Steady-Bridge – Ergonomischer Maus-Adapter</title>
   <script
-  type="module"
-  src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"
-></script>
+    type="module"
+    src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"
+  ></script>
 </head>
-<body style="font-family: sans-serif; max-width: 700px; margin: 40px auto; line-height: 1.6;">
+<body style="font-family: sans-serif; max-width: 700px; margin: 40px auto; padding: 0 15px; line-height: 1.6;">
   <h1>Steady-Bridge</h1>
+
+  <img 
+    src="./Steadybridge_Mouse_small.png" 
+    alt="Steady-Bridge M5Stamp S3 Maus-Adapter" 
+    style="max-width: 100%; height: auto; border-radius: 8px; margin: 15px 0;"
+  >
+
   <p>Schließen Sie Ihren M5Stamp S3 per USB-Kabel an und installieren Sie die Firmware direkt über den Browser (Chrome oder Edge):</p>
 
   <!-- Der Web-Flasher-Button -->
-  <esp-web-install-button manifest="./manifest.json"></esp-web-install-button>
+  <esp-web-install-button manifest="./manifest.json">
+    <span slot="unsupported" style="color: #b00020; font-weight: bold;">
+      ⚠️ Bitte öffnen Sie diese Seite am PC mit Google Chrome oder Microsoft Edge, um das Gerät zu installieren.
+    </span>
+  </esp-web-install-button>
 
   <hr style="margin: 30px 0;">
   <h3>Projekt unterstützen</h3>
