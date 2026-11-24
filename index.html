@@ -21,8 +21,38 @@
       width: 100%;
       height: auto;
       border-radius: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
       display: block;
+    }
+    h1 {
+      font-size: 1.75rem;
+      line-height: 1.3;
+      margin-top: 0;
+      margin-bottom: 16px;
+      color: #111;
+    }
+    h2 {
+      font-size: 1.25rem;
+      margin-top: 28px;
+      margin-bottom: 12px;
+      color: #111;
+    }
+    .benefits {
+      padding-left: 20px;
+      margin-bottom: 20px;
+    }
+    .benefits li {
+      margin-bottom: 10px;
+    }
+    .install-box {
+      background-color: #f6f7f9;
+      border: 1px solid #e0e4e8;
+      border-radius: 12px;
+      padding: 22px 24px;
+      margin-top: 32px;
+    }
+    .install-box h2 {
+      margin-top: 0;
     }
     .corner-mouse {
       position: fixed;
@@ -47,7 +77,7 @@
     .modal-overlay.open {
       display: flex;
     }
-	.modal-box {
+    .modal-box {
       background: #f4ff00;
       color: #111;
       border: 3px solid #111;
@@ -111,18 +141,51 @@
     class="banner"
   >
 
-  <h1></h1>
-  <p>Schließen Sie Ihren M5Stamp S3 per USB-Kabel an und installieren Sie die Firmware direkt über den Browser (Chrome oder Edge):</p>
+  <main>
+    <h1>Steady-Mouse: Ruhige und präzise Maussteuerung trotz Tremor</h1>
 
-  <!-- Der Web-Flasher-Button -->
-  <esp-web-install-button id="flash-btn" manifest="./manifest.json">
-    <span slot="unsupported" style="color: #b00020; font-weight: bold;">
-      ⚠️ Bitte öffnen Sie diese Seite am PC mit Google Chrome oder Microsoft Edge, um das Gerät zu installieren.
-    </span>
-    <span slot="not-allowed" style="color: #b00020; font-weight: bold;">
-      ⚠️ Bitte rufen Sie diese Seite über eine gesicherte HTTPS-Verbindung (oder localhost) auf.
-    </span>
-  </esp-web-install-button>
+    <p>
+      Für Menschen mit Parkinson oder essenziellem Tremor kann die tägliche Arbeit am Computer schnell zur Geduldsprobe werden. <strong>Steady-Mouse</strong> gibt Ihnen die Kontrolle zurück: Die kompakte Hardwarebrücke wird einfach zwischen Ihrer vorhandenen Bluetooth-Maus und Ihrem Endgerät geschaltet und filtert tremorbedingtes Zittern zuverlässig und in Echtzeit heraus.
+    </p>
+
+    <h2>Ihre Vorteile auf einen Blick</h2>
+    <ul class="benefits">
+      <li>
+        <strong>6 individuelle Dämpfungsmodi:</strong> Jeder Tremor ist anders – und oft sogar tagesformabhängig. Wählen Sie direkt am Gerät aus sechs fein abgestimmten Stufen genau die Dämpfung, die Ihnen gerade das angenehmste und präziseste Arbeiten ermöglicht.
+      </li>
+      <li>
+        <strong>Einfache Plug-and-Play-Lösung:</strong> Keine komplizierte Einrichtung, keine Software-Installation und keine Treiber nötig. Verbinden Sie die Hardwarebrücke einfach mit Ihrer Maus und Ihrem Gerät – Steady-Mouse ist sofort einsatzbereit.
+      </li>
+      <li>
+        <strong>Maximale Plattform-Freiheit:</strong> Egal ob am Arbeitsplatz oder zu Hause – Steady-Mouse funktioniert nahtlos unter <strong>Windows, Linux und iOS</strong>.
+      </li>
+      <li>
+        <strong>Ihre gewohnte Maus bleibt:</strong> Sie müssen sich nicht an eine klobige oder ungewohnte Spezialmaus gewöhnen. Nutzen Sie einfach Ihre bevorzugte Bluetooth-Maus weiter – nur eben spürbar ruhiger.
+      </li>
+    </ul>
+
+    <p>
+      Ob beim Schreiben von E-Mails, beim Surfen im Internet oder im Berufsalltag: Mit Steady-Mouse bedienen Sie Ihren Computer wieder entspannt, treffsicher und selbstbestimmt.
+    </p>
+
+    <!-- Bereich für die Firmware-Installation -->
+    <section class="install-box">
+      <h2>Firmware direkt im Browser installieren</h2>
+      <p>
+        Schließen Sie Ihren <strong>M5Stamp S3</strong> per USB-Kabel an und installieren Sie die Firmware direkt über den Browser (Chrome oder Edge):
+      </p>
+
+      <!-- Der Web-Flasher-Button -->
+      <esp-web-install-button id="flash-btn" manifest="./manifest.json">
+        <span slot="unsupported" style="color: #b00020; font-weight: bold;">
+          ⚠️ Bitte öffnen Sie diese Seite am PC mit Google Chrome oder Microsoft Edge, um das Gerät zu installieren.
+        </span>
+        <span slot="not-allowed" style="color: #b00020; font-weight: bold;">
+          ⚠️ Bitte rufen Sie diese Seite über eine gesicherte HTTPS-Verbindung (oder localhost) auf.
+        </span>
+      </esp-web-install-button>
+    </section>
+  </main>
 
   <img 
     src="./Steadybridge_Mouse_small.png" 
@@ -133,7 +196,7 @@
   <!-- Spenden-Popup beim Klick auf Connect -->
   <div id="donate-modal" class="modal-overlay" role="dialog" aria-modal="true">
     <div class="modal-box">
-      <button class="modal-close" id="close-modal" aria-label="Schließen">&times;</button>
+      <button class="modal-close" id="close-modal" aria-label="Schließen">×</button>
       <h3 style="margin-top: 0;">☕ Projekt unterstützen</h3>
       <p>
         <strong>Steady-Mouse</strong> ist komplett kostenlos. Während die Installation läuft: Wenn Ihnen oder Ihren Angehörigen dieses Tool hilft, freue ich mich sehr über einen kleinen Kaffee!
