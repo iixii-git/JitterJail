@@ -2,16 +2,20 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Start</title>
   <style>
     body {
       margin: 0;
       height: 100vh;
+      height: 100dvh;
       background-color: #d9d9d9;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      padding: 20px;
+      box-sizing: border-box;
     }
 
     .logo-container {
@@ -23,14 +27,17 @@
 
     img {
       max-width: 480px;
-      width: 65vw;
+      width: 75vw;
       height: auto;
       display: block;
       cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    /* Zitter-Animation bei Mauskontakt */
-    img:hover {
+    /* Zitter-Animation bei Mauskontakt oder Antippen auf dem Handy */
+    img:hover,
+    img:active,
+    img.is-jittering {
       animation: jitter 0.14s linear infinite;
     }
 
@@ -61,7 +68,21 @@
 </head>
 <body>
   <div class="logo-container">
-    <img src="JitterJail_klein_sw.png" alt="JitterJail Logo S/W">
+    <img src="JitterJail_klein_sw.png" alt="JitterJail Logo S/W" id="start-logo">
   </div>
+
+  <script>
+    const logo = document.getElementById('start-logo');
+    let jitterTimeout;
+
+    // Löst das Zittern auf Touchscreens beim Antippen für 1,2 Sekunden aus
+    logo.addEventListener('click', () => {
+      logo.classList.add('is-jittering');
+      clearTimeout(jitterTimeout);
+      jitterTimeout = setTimeout(() => {
+        logo.classList.remove('is-jittering');
+      }, 1200);
+    });
+  </script>
 </body>
 </html>

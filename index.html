@@ -10,6 +10,7 @@
   <style>
     :root {
       --sidebar-width: 280px;
+      --mobile-header-height: 68px;
       --bg-gray: #d9d9d9;
       --sidebar-gray: #c7c7c7;
       --hover-gray: #b8b8b8;
@@ -30,7 +31,18 @@
       color: var(--text-color);
       display: flex;
       height: 100vh;
+      height: 100dvh;
       overflow: hidden;
+    }
+
+    /* Mobile Kopfleiste (auf Desktop ausgeblendet) */
+    .mobile-header {
+      display: none;
+    }
+
+    /* Dunkler Hintergrund bei geöffnetem Handy-Menü */
+    .sidebar-backdrop {
+      display: none;
     }
 
     /* Linke Menüspalte über die volle Höhe */
@@ -43,7 +55,6 @@
       flex-shrink: 0;
       height: 100%;
       z-index: 20;
-      /* Räumlicher Schatten zum Anzeigefenster */
       box-shadow: 6px 0 22px rgba(0, 0, 0, 0.1);
     }
 
@@ -88,7 +99,7 @@
       transition: top 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
     }
 
-    /* Banner als Kopf der Menüspalte mit gleicher Hintergrundfarbe */
+    /* Banner als Kopf der Menüspalte */
     .sidebar-banner {
       background-color: var(--sidebar-gray);
       padding: 20px 16px 18px 16px;
@@ -132,6 +143,7 @@
       background-color: rgba(255, 255, 255, 0.25);
       border-left: 4px solid transparent;
       transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      -webkit-tap-highlight-color: transparent;
     }
 
     .menu-item:hover {
@@ -162,7 +174,7 @@
       transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    /* Freier Inhaltsbereich rechts mit sanftem Einlauf-Schatten */
+    /* Freier Inhaltsbereich rechts */
     main.content {
       position: relative;
       flex: 1;
@@ -188,11 +200,140 @@
       border: none;
       display: block;
     }
+
+    /* =========================================
+       MOBILE ANSICHT (Smartphones & kleine Tablets)
+       ========================================= */
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      /* Mobile Top-Bar einblenden */
+      .mobile-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: var(--mobile-header-height);
+        padding: 8px 16px;
+        background-color: var(--sidebar-gray);
+        border-bottom: 2px solid var(--accent-color);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+        z-index: 40;
+        flex-shrink: 0;
+      }
+
+      .mobile-header-logo {
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+
+      .mobile-header-logo img {
+        max-height: 48px;
+        width: auto;
+        display: block;
+      }
+
+      /* Hamburger-Button */
+      .menu-toggle {
+        background: rgba(255, 255, 255, 0.35);
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        border-radius: 8px;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .menu-toggle span {
+        display: block;
+        width: 22px;
+        height: 2.5px;
+        background-color: var(--text-color);
+        border-radius: 2px;
+        transition: transform 0.25s ease, opacity 0.25s ease;
+      }
+
+      .menu-toggle.open span:nth-child(1) {
+        transform: translateY(7.5px) rotate(45deg);
+      }
+      .menu-toggle.open span:nth-child(2) {
+        opacity: 0;
+      }
+      .menu-toggle.open span:nth-child(3) {
+        transform: translateY(-7.5px) rotate(-45deg);
+      }
+
+      /* Abdunklung hinter dem offenen Menü */
+      .sidebar-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.45);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        z-index: 90;
+      }
+
+      .sidebar-backdrop.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      /* Menüspalte wird zum ausfahrbaren Drawer */
+      nav.sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 270px;
+        max-width: 82vw;
+        height: 100dvh;
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        z-index: 100;
+      }
+
+      nav.sidebar.open {
+        transform: translateX(0);
+      }
+
+      /* Anzeigefenster nutzt volle Bildschirmbreite */
+      main.content {
+        width: 100%;
+        height: calc(100dvh - var(--mobile-header-height));
+      }
+
+      main.content::before {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Linke Spalte mit Banner oben und Menü darunter -->
+  <!-- Mobile Kopfleiste -->
+  <header class="mobile-header">
+    <a href="start.html" target="content-frame" class="mobile-header-logo" id="mobile-banner-link" title="Zur Startseite">
+      <img src="JitterJail_Banner_klein.png" alt="JitterJail Banner">
+    </a>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Menü öffnen">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <!-- Abdunklung für mobiles Menü -->
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+  <!-- Menüspalte (Desktop links / Mobil ausfahrbar) -->
   <nav class="sidebar" id="sidebar">
     <a href="start.html" target="content-frame" class="sidebar-banner" id="banner-link" title="Zur Startseite">
       <img src="JitterJail_Banner_klein.png" alt="JitterJail Banner">
@@ -225,7 +366,7 @@
     <div class="edge-node" id="edge-node"></div>
   </nav>
 
-  <!-- Inhaltsbereich rechts -->
+  <!-- Inhaltsbereich -->
   <main class="content">
     <iframe name="content-frame" src="start.html" title="Inhaltsbereich"></iframe>
   </main>
@@ -234,7 +375,32 @@
     const sidebar = document.getElementById('sidebar');
     const menuItems = document.querySelectorAll('.menu-item');
     const bannerLink = document.getElementById('banner-link');
+    const mobileBannerLink = document.getElementById('mobile-banner-link');
     const edgeNode = document.getElementById('edge-node');
+    const menuToggle = document.getElementById('menu-toggle');
+    const backdrop = document.getElementById('sidebar-backdrop');
+
+    function openMobileMenu() {
+      sidebar.classList.add('open');
+      backdrop.classList.add('open');
+      menuToggle.classList.add('open');
+    }
+
+    function closeMobileMenu() {
+      sidebar.classList.remove('open');
+      backdrop.classList.remove('open');
+      menuToggle.classList.remove('open');
+    }
+
+    menuToggle.addEventListener('click', () => {
+      if (sidebar.classList.contains('open')) {
+        closeMobileMenu();
+      } else {
+        openMobileMenu();
+      }
+    });
+
+    backdrop.addEventListener('click', closeMobileMenu);
 
     function moveNodeToItem(item) {
       const sidebarRect = sidebar.getBoundingClientRect();
@@ -249,15 +415,23 @@
         menuItems.forEach(el => el.classList.remove('active'));
         item.classList.add('active');
         moveNodeToItem(item);
+        closeMobileMenu();
       });
     });
 
-    bannerLink.addEventListener('click', () => {
+    function resetToStart() {
       menuItems.forEach(el => el.classList.remove('active'));
       edgeNode.style.opacity = '0';
-    });
+      closeMobileMenu();
+    }
+
+    bannerLink.addEventListener('click', resetToStart);
+    mobileBannerLink.addEventListener('click', resetToStart);
 
     window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        closeMobileMenu();
+      }
       const activeItem = document.querySelector('.menu-item.active');
       if (activeItem) moveNodeToItem(activeItem);
     });
