@@ -11,17 +11,57 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pulse-and-float 4s ease-in-out infinite;
     }
 
     img {
-      max-width: 360px;
-      width: 60%;
+      max-width: 480px;
+      width: 65vw;
       height: auto;
-      mix-blend-mode: multiply;
+      display: block;
+      cursor: pointer;
+    }
+
+    /* Zitter-Animation bei Mauskontakt */
+    img:hover {
+      animation: jitter 0.14s linear infinite;
+    }
+
+    @keyframes pulse-and-float {
+      0% {
+        transform: translateY(0) scale(1);
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.06));
+      }
+      50% {
+        transform: translateY(-8px) scale(1.03);
+        filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.12));
+      }
+      100% {
+        transform: translateY(0) scale(1);
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.06));
+      }
+    }
+
+    @keyframes jitter {
+      0%   { transform: translate(0, 0) rotate(0deg); }
+      20%  { transform: translate(-3px, 2px) rotate(-0.8deg); }
+      40%  { transform: translate(3px, -2px) rotate(0.8deg); }
+      60%  { transform: translate(-2px, -2px) rotate(-0.5deg); }
+      80%  { transform: translate(2px, 3px) rotate(0.5deg); }
+      100% { transform: translate(0, 0) rotate(0deg); }
     }
   </style>
 </head>
 <body>
-  <img src="JitterJail_klein_sw.png" alt="JitterJail Logo">
+  <div class="logo-container">
+    <img src="JitterJail_klein_sw.png" alt="JitterJail Logo S/W">
+  </div>
 </body>
 </html>

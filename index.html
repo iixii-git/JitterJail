@@ -4,19 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JitterJail</title>
-  <!-- Schriftart passend zum JitterJail-Logo -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --banner-height: 110px;
-      --sidebar-width: 240px;
+      --sidebar-width: 280px;
       --bg-gray: #d9d9d9;
       --sidebar-gray: #c7c7c7;
-      --hover-gray: #b5b5b5;
+      --hover-gray: #b8b8b8;
       --accent-color: #28969e;
-      --text-color: #222222;
+      --accent-glow: rgba(40, 150, 158, 0.45);
+      --text-color: #1a1a1a;
     }
 
     * {
@@ -29,92 +28,158 @@
       font-family: 'Montserrat', sans-serif;
       background-color: var(--bg-gray);
       color: var(--text-color);
+      display: flex;
+      height: 100vh;
       overflow: hidden;
     }
 
-    /* Fixierter Banner oben */
-    header {
-      position: fixed;
+    /* Linke Menüspalte über die volle Höhe */
+    nav.sidebar {
+      position: relative;
+      width: var(--sidebar-width);
+      background: linear-gradient(180deg, #cccccc 0%, var(--sidebar-gray) 100%);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      height: 100%;
+      z-index: 20;
+      /* Räumlicher Schatten zum Anzeigefenster */
+      box-shadow: 6px 0 22px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Animierte Türkis-Trennlinie am rechten Rand der Menüspalte */
+    nav.sidebar::after {
+      content: "";
+      position: absolute;
       top: 0;
-      left: 0;
-      width: 100%;
-      height: var(--banner-height);
-      background-color: #000000;
+      right: 0;
+      width: 3px;
+      height: 100%;
+      background: linear-gradient(
+        180deg,
+        rgba(40, 150, 158, 0.15) 0%,
+        rgba(40, 150, 158, 0.85) 50%,
+        rgba(40, 150, 158, 0.15) 100%
+      );
+      background-size: 100% 200%;
+      animation: stabilizer-flow 5s ease-in-out infinite;
+    }
+
+    @keyframes stabilizer-flow {
+      0%, 100% { background-position: 0% 0%; }
+      50% { background-position: 0% 100%; }
+    }
+
+    /* Wandernder Knotenpunkt auf der Trennlinie */
+    .edge-node {
+      position: absolute;
+      right: -6px;
+      top: 0;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background-color: #ffffff;
+      border: 3px solid var(--accent-color);
+      box-shadow: 0 0 10px var(--accent-glow);
+      transform: translateY(-50%);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 30;
+      transition: top 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
+    }
+
+    /* Banner als Kopf der Menüspalte mit gleicher Hintergrundfarbe */
+    .sidebar-banner {
+      background-color: var(--sidebar-gray);
+      padding: 20px 16px 18px 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 1000;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     }
 
-    header a {
-      height: 100%;
-      display: flex;
-      align-items: center;
+    .sidebar-banner img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.2s ease;
     }
 
-    header img {
-      max-height: 100%;
-      max-width: 100%;
-      object-fit: contain;
+    .sidebar-banner:hover img {
+      transform: scale(1.03);
     }
 
-    /* Hauptlayout unter dem Banner */
-    .layout {
-      display: flex;
-      margin-top: var(--banner-height);
-      height: calc(100vh - var(--banner-height));
-    }
-
-    /* Linke Menüspalte */
-    nav.sidebar {
-      width: var(--sidebar-width);
-      background-color: var(--sidebar-gray);
-      border-right: 1px solid #aaaaaa;
-      padding: 20px 12px;
+    /* Bereich für die Menüpunkte */
+    .menu-list {
+      padding: 22px 14px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
       overflow-y: auto;
-      flex-shrink: 0;
+      flex: 1;
     }
 
     .menu-item {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 10px 14px;
+      gap: 16px;
+      padding: 12px 16px;
       text-decoration: none;
       color: var(--text-color);
-      font-size: 16px;
+      font-size: 17px;
       font-weight: 600;
       border-radius: 8px;
-      transition: background-color 0.2s, border-left 0.2s;
+      background-color: rgba(255, 255, 255, 0.25);
       border-left: 4px solid transparent;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     .menu-item:hover {
       background-color: var(--hover-gray);
+      transform: translateX(4px);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .menu-item:hover img {
+      transform: rotate(10deg) scale(1.12);
     }
 
     .menu-item.active {
-      background-color: #bcbcbc;
+      background-color: #ffffff;
       border-left: 4px solid var(--accent-color);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .menu-item.active img {
+      transform: scale(1.08);
     }
 
     .menu-item img {
-      width: 34px;
-      height: 34px;
+      width: 46px;
+      height: 46px;
       object-fit: contain;
-      /* Macht einen eventuellen weißen Hintergrund des S/W-Logos transparent */
-      mix-blend-mode: multiply;
+      flex-shrink: 0;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    /* Freier Bereich für die Seiten */
+    /* Freier Inhaltsbereich rechts mit sanftem Einlauf-Schatten */
     main.content {
+      position: relative;
       flex: 1;
       background-color: var(--bg-gray);
       height: 100%;
+    }
+
+    main.content::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 18px;
+      height: 100%;
+      background: linear-gradient(90deg, rgba(0, 0, 0, 0.06) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 10;
     }
 
     main.content iframe {
@@ -127,57 +192,74 @@
 </head>
 <body>
 
-  <!-- Fixierter Banner -->
-  <header>
-    <a href="start.html" target="content-frame" id="banner-link" title="Zur Startseite">
-      <img src="JitterJail_Banner_klein.jpg" alt="JitterJail Banner">
+  <!-- Linke Spalte mit Banner oben und Menü darunter -->
+  <nav class="sidebar" id="sidebar">
+    <a href="start.html" target="content-frame" class="sidebar-banner" id="banner-link" title="Zur Startseite">
+      <img src="JitterJail_Banner_klein.png" alt="JitterJail Banner">
     </a>
-  </header>
 
-  <div class="layout">
-    <!-- Menüspalte links -->
-    <nav class="sidebar">
+    <div class="menu-list" id="menu-list">
       <a href="menu1.html" target="content-frame" class="menu-item">
-        <img src="JitterJail_klein_sw.png" alt="Logo">
+        <img src="jitterjail_icon.png" alt="Menu Icon">
         <span>menu1</span>
       </a>
       <a href="menu2.html" target="content-frame" class="menu-item">
-        <img src="JitterJail_klein_sw.png" alt="Logo">
+        <img src="jitterjail_icon.png" alt="Menu Icon">
         <span>menu2</span>
       </a>
       <a href="menu3.html" target="content-frame" class="menu-item">
-        <img src="JitterJail_klein_sw.png" alt="Logo">
+        <img src="jitterjail_icon.png" alt="Menu Icon">
         <span>menu3</span>
       </a>
       <a href="menu4.html" target="content-frame" class="menu-item">
-        <img src="JitterJail_klein_sw.png" alt="Logo">
+        <img src="jitterjail_icon.png" alt="Menu Icon">
         <span>menu4</span>
       </a>
       <a href="menu5.html" target="content-frame" class="menu-item">
-        <img src="JitterJail_klein_sw.png" alt="Logo">
+        <img src="jitterjail_icon.png" alt="Menu Icon">
         <span>menu5</span>
       </a>
-    </nav>
+    </div>
 
-    <!-- Inhaltsbereich rechts -->
-    <main class="content">
-      <iframe name="content-frame" src="start.html" title="Inhaltsbereich"></iframe>
-    </main>
-  </div>
+    <!-- Verbindungs-Knotenpunkt zum Anzeigefenster -->
+    <div class="edge-node" id="edge-node"></div>
+  </nav>
+
+  <!-- Inhaltsbereich rechts -->
+  <main class="content">
+    <iframe name="content-frame" src="start.html" title="Inhaltsbereich"></iframe>
+  </main>
 
   <script>
+    const sidebar = document.getElementById('sidebar');
     const menuItems = document.querySelectorAll('.menu-item');
     const bannerLink = document.getElementById('banner-link');
+    const edgeNode = document.getElementById('edge-node');
+
+    function moveNodeToItem(item) {
+      const sidebarRect = sidebar.getBoundingClientRect();
+      const itemRect = item.getBoundingClientRect();
+      const centerY = itemRect.top - sidebarRect.top + (itemRect.height / 2);
+      edgeNode.style.top = `${centerY}px`;
+      edgeNode.style.opacity = '1';
+    }
 
     menuItems.forEach(item => {
       item.addEventListener('click', () => {
         menuItems.forEach(el => el.classList.remove('active'));
         item.classList.add('active');
+        moveNodeToItem(item);
       });
     });
 
     bannerLink.addEventListener('click', () => {
       menuItems.forEach(el => el.classList.remove('active'));
+      edgeNode.style.opacity = '0';
+    });
+
+    window.addEventListener('resize', () => {
+      const activeItem = document.querySelector('.menu-item.active');
+      if (activeItem) moveNodeToItem(activeItem);
     });
   </script>
 
