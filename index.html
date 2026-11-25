@@ -3,333 +3,181 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Steady-Mouse – Ergonomischer Maus-Adapter</title>
-  <script
-    type="module"
-    src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"
-  ></script>
+  <title>JitterJail</title>
+  <!-- Schriftart passend zum JitterJail-Logo -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    html {
-      scroll-behavior: smooth;
+    :root {
+      --banner-height: 110px;
+      --sidebar-width: 240px;
+      --bg-gray: #d9d9d9;
+      --sidebar-gray: #c7c7c7;
+      --hover-gray: #b5b5b5;
+      --accent-color: #28969e;
+      --text-color: #222222;
     }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      font-family: sans-serif;
-      margin: 0;
-      line-height: 1.6;
-      color: #222;
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--bg-gray);
+      color: var(--text-color);
+      overflow: hidden;
     }
 
-    /* Hauptinhalt zentriert */
-    .page-layout {
-      max-width: 720px;
-      margin: 30px auto;
-      padding: 0 15px 140px 15px;
-    }
-
-    /* Schlankes 4-Punkte-Menü fest am linken Bildschirmrand */
-    .side-nav {
+    /* Fixierter Banner oben */
+    header {
       position: fixed;
-      top: 30px;
-      left: 20px;
-      width: 170px;
-      background-color: #f6f7f9;
-      border: 1px solid #e0e4e8;
-      border-radius: 12px;
-      padding: 12px 8px;
-      z-index: 400;
-    }
-    .nav-mouse {
-      display: block;
+      top: 0;
+      left: 0;
       width: 100%;
-      max-width: 130px;
-      height: auto;
-      margin: 4px auto 12px auto;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      height: var(--banner-height);
+      background-color: #000000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     }
-    .side-nav ul {
-      list-style: none;
-      margin: 0;
-      padding: 10px 0 0 0;
-      border-top: 1px solid #e0e4e8;
+
+    header a {
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    header img {
+      max-height: 100%;
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    /* Hauptlayout unter dem Banner */
+    .layout {
+      display: flex;
+      margin-top: var(--banner-height);
+      height: calc(100vh - var(--banner-height));
+    }
+
+    /* Linke Menüspalte */
+    nav.sidebar {
+      width: var(--sidebar-width);
+      background-color: var(--sidebar-gray);
+      border-right: 1px solid #aaaaaa;
+      padding: 20px 12px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
-    }
-    .side-nav a {
-      display: block;
-      padding: 8px 12px;
-      color: #333;
-      text-decoration: none;
-      font-size: 0.92rem;
-      font-weight: 500;
-      border-radius: 8px;
-      transition: background-color 0.15s ease, color 0.15s ease;
-    }
-    .side-nav a:hover,
-    .side-nav a:focus {
-      background-color: #e9edf2;
-      color: #111;
+      gap: 10px;
+      overflow-y: auto;
+      flex-shrink: 0;
     }
 
-    .banner {
-      width: 100%;
-      height: auto;
-      border-radius: 10px;
-      margin-bottom: 24px;
-      display: block;
-    }
-    h1 {
-      font-size: 1.75rem;
-      line-height: 1.3;
-      margin-top: 0;
-      margin-bottom: 16px;
-      color: #111;
-    }
-    h2 {
-      font-size: 1.25rem;
-      margin-top: 28px;
-      margin-bottom: 12px;
-      color: #111;
-    }
-    .benefits {
-      padding-left: 20px;
-      margin-bottom: 20px;
-    }
-    .benefits li {
-      margin-bottom: 10px;
-    }
-    .install-box {
-      background-color: #f6f7f9;
-      border: 1px solid #e0e4e8;
-      border-radius: 12px;
-      padding: 22px 24px;
-      margin-top: 32px;
-    }
-    .install-box h2 {
-      margin-top: 0;
-    }
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      bottom: 18px;
-      right: 18px;
-      z-index: 1000;
-      max-width: 340px;
-      width: calc(100% - 36px);
-    }
-    .modal-overlay.open {
+    .menu-item {
       display: flex;
-    }
-    .modal-box {
-      background: #f4ff00;
-      color: #111;
-      border: 3px solid #111;
-      max-width: 440px;
-      width: 100%;
-      padding: 25px;
-      border-radius: 14px;
-      box-shadow: 0 0 35px rgba(244, 255, 0, 0.85), 0 10px 30px rgba(0, 0, 0, 0.4);
-      text-align: center;
-      position: relative;
-    }
-    .modal-close {
-      position: absolute;
-      top: 10px;
-      right: 14px;
-      background: none;
-      border: none;
-      font-size: 24px;
-      font-weight: bold;
-      cursor: pointer;
-      color: #111;
-    }
-    .kofi-btn {
-      display: inline-block;
-      margin-top: 15px;
-      padding: 12px 24px;
-      background-color: #111;
-      color: #f4ff00;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
       text-decoration: none;
-      font-weight: bold;
-      border-radius: 9999px;
-      transition: transform 0.15s ease;
-    }
-    .kofi-btn:hover {
-      background-color: #2b2b2b;
-      transform: scale(1.03);
-    }
-    .later-link {
-      background: none;
-      border: none;
-      color: #222;
+      color: var(--text-color);
+      font-size: 16px;
       font-weight: 600;
-      cursor: pointer;
-      text-decoration: underline;
-      font-size: 0.9em;
-    }
-    footer {
-      margin-top: 50px;
-      padding-top: 15px;
-      border-top: 1px solid #eee;
-      font-size: 0.85em;
-      color: #666;
+      border-radius: 8px;
+      transition: background-color 0.2s, border-left 0.2s;
+      border-left: 4px solid transparent;
     }
 
-    /* Mittelgroße Bildschirme: Abstand halten, damit nichts überlappt */
-    @media (max-width: 1140px) {
-      .page-layout {
-        margin-left: 215px;
-        margin-right: 20px;
-      }
+    .menu-item:hover {
+      background-color: var(--hover-gray);
     }
 
-    /* Mobile Ansicht: Menü horizontal oben mit kompaktem Mausbild */
-    @media (max-width: 768px) {
-      .page-layout {
-        margin: 16px auto;
-      }
-      .side-nav {
-        position: static;
-        width: 100%;
-        box-sizing: border-box;
-        padding: 8px 10px;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-      .nav-mouse {
-        width: 44px;
-        margin: 0;
-        flex-shrink: 0;
-      }
-      .side-nav ul {
-        flex: 1;
-        padding-top: 0;
-        border-top: none;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-around;
-      }
-      .side-nav a {
-        padding: 6px 10px;
-        font-size: 0.88rem;
-      }
+    .menu-item.active {
+      background-color: #bcbcbc;
+      border-left: 4px solid var(--accent-color);
+    }
+
+    .menu-item img {
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+      /* Macht einen eventuellen weißen Hintergrund des S/W-Logos transparent */
+      mix-blend-mode: multiply;
+    }
+
+    /* Freier Bereich für die Seiten */
+    main.content {
+      flex: 1;
+      background-color: var(--bg-gray);
+      height: 100%;
+    }
+
+    main.content iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
     }
   </style>
 </head>
 <body>
 
-  <div class="page-layout">
-    <!-- Schlankes 4-Punkte-Menü mit Mausbild im Kopf -->
-    <nav class="side-nav" aria-label="Hauptnavigation">
-      <img
-        src="./Steadybridge_Mouse_small.png"
-        alt="Steady-Bridge M5Stamp S3 Maus-Adapter"
-        class="nav-mouse"
-      >
-      <ul>
-        <li><a href="#uebersicht">Übersicht</a></li>
-        <li><a href="#vorteile">Vorteile</a></li>
-        <li><a href="#installation">Installation</a></li>
-        <li><a href="impressum.html">Impressum</a></li>
-      </ul>
+  <!-- Fixierter Banner -->
+  <header>
+    <a href="start.html" target="content-frame" id="banner-link" title="Zur Startseite">
+      <img src="JitterJail_Banner_klein.jpg" alt="JitterJail Banner">
+    </a>
+  </header>
+
+  <div class="layout">
+    <!-- Menüspalte links -->
+    <nav class="sidebar">
+      <a href="menu1.html" target="content-frame" class="menu-item">
+        <img src="JitterJail_klein_sw.png" alt="Logo">
+        <span>menu1</span>
+      </a>
+      <a href="menu2.html" target="content-frame" class="menu-item">
+        <img src="JitterJail_klein_sw.png" alt="Logo">
+        <span>menu2</span>
+      </a>
+      <a href="menu3.html" target="content-frame" class="menu-item">
+        <img src="JitterJail_klein_sw.png" alt="Logo">
+        <span>menu3</span>
+      </a>
+      <a href="menu4.html" target="content-frame" class="menu-item">
+        <img src="JitterJail_klein_sw.png" alt="Logo">
+        <span>menu4</span>
+      </a>
+      <a href="menu5.html" target="content-frame" class="menu-item">
+        <img src="JitterJail_klein_sw.png" alt="Logo">
+        <span>menu5</span>
+      </a>
     </nav>
 
-    <div class="content-column">
-      <img 
-        id="uebersicht"
-        src="./Steadymouse_banner_small.png" 
-        alt="Steady-Bridge Banner" 
-        class="banner"
-      >
-
-      <main>
-        <h1>Ruhige und präzise Maussteuerung trotz Tremor</h1>
-
-        <p>
-          Für Menschen mit Parkinson oder essenziellem Tremor kann die tägliche Arbeit am Computer schnell zur Geduldsprobe werden. <strong>Steady-Mouse</strong> gibt Ihnen die Kontrolle zurück: Die kompakte Hardwarebrücke wird einfach zwischen Ihrer vorhandenen Bluetooth-Maus und Ihrem Endgerät geschaltet und filtert tremorbedingtes Zittern zuverlässig und in Echtzeit heraus.
-        </p>
-
-        <h2 id="vorteile">Ihre Vorteile auf einen Blick</h2>
-        <ul class="benefits">
-          <li>
-            <strong>6 individuelle Dämpfungsmodi:</strong> Jeder Tremor ist anders – und oft sogar tagesformabhängig. Wählen Sie direkt am Gerät aus sechs fein abgestimmten Stufen genau die Dämpfung, die Ihnen gerade das angenehmste und präziseste Arbeiten ermöglicht.
-          </li>
-          <li>
-            <strong>Einfache Plug-and-Play-Lösung:</strong> Keine komplizierte Einrichtung, keine Software-Installation und keine Treiber nötig. Verbinden Sie die Hardwarebrücke einfach mit Ihrer Maus und Ihrem Gerät – Steady-Mouse ist sofort einsatzbereit.
-          </li>
-          <li>
-            <strong>Maximale Plattform-Freiheit:</strong> Egal ob am Arbeitsplatz oder zu Hause – Steady-Mouse funktioniert nahtlos unter <strong>Windows, Linux und iOS</strong>.
-          </li>
-          <li>
-            <strong>Ihre gewohnte Maus bleibt:</strong> Sie müssen sich nicht an eine klobige oder ungewohnte Spezialmaus gewöhnen. Nutzen Sie einfach Ihre bevorzugte Bluetooth-Maus weiter – nur eben spürbar ruhiger.
-          </li>
-        </ul>
-
-        <p>
-          Ob beim Schreiben von E-Mails, beim Surfen im Internet oder im Berufsalltag: Mit Steady-Mouse bedienen Sie Ihren Computer wieder entspannt, treffsicher und selbstbestimmt.
-        </p>
-
-        <!-- Bereich für die Firmware-Installation -->
-        <section id="installation" class="install-box">
-          <h2>Firmware direkt im Browser installieren</h2>
-          <p>
-            Schließen Sie Ihren <strong>M5Stamp S3</strong> per USB-Kabel an und installieren Sie die Firmware direkt über den Browser (Chrome oder Edge):
-          </p>
-
-          <!-- Der Web-Flasher-Button -->
-          <esp-web-install-button id="flash-btn" manifest="./manifest.json">
-            <span slot="unsupported" style="color: #b00020; font-weight: bold;">
-              ⚠️ Bitte öffnen Sie diese Seite am PC mit Google Chrome oder Microsoft Edge, um das Gerät zu installieren.
-            </span>
-            <span slot="not-allowed" style="color: #b00020; font-weight: bold;">
-              ⚠️ Bitte rufen Sie diese Seite über eine gesicherte HTTPS-Verbindung (oder localhost) auf.
-            </span>
-          </esp-web-install-button>
-        </section>
-      </main>
-
-      <footer>
-        <a href="impressum.html">Impressum & Datenschutz</a>
-      </footer>
-    </div>
-  </div>
-
-  <!-- Spenden-Popup beim Klick auf Connect -->
-  <div id="donate-modal" class="modal-overlay" role="dialog" aria-modal="true">
-    <div class="modal-box">
-      <button class="modal-close" id="close-modal" aria-label="Schließen">×</button>
-      <h3 style="margin-top: 0;">☕ Projekt unterstützen</h3>
-      <p>
-        <strong>Steady-Mouse</strong> ist komplett kostenlos. Wenn Ihnen oder Ihren Angehörigen dieses Tool hilft, unterstützen Sie bitte dieses Projekt.
-      </p>
-      <a href="https://ko-fi.com/steadybridge" target="_blank" rel="noopener" class="kofi-btn">
-        Jetzt spenden
-      </a>
-      <div style="margin-top: 14px;">
-        <button id="later-btn" style="background: none; border: none; color: #777; cursor: pointer; text-decoration: underline; font-size: 0.9em;">
-           
-        </button>
-      </div>
-    </div>
+    <!-- Inhaltsbereich rechts -->
+    <main class="content">
+      <iframe name="content-frame" src="start.html" title="Inhaltsbereich"></iframe>
+    </main>
   </div>
 
   <script>
-    const flashBtn = document.getElementById("flash-btn");
-    const modal = document.getElementById("donate-modal");
-    const closeModal = document.getElementById("close-modal");
-    const laterBtn = document.getElementById("later-btn");
+    const menuItems = document.querySelectorAll('.menu-item');
+    const bannerLink = document.getElementById('banner-link');
 
-    flashBtn.addEventListener("click", () => {
-      modal.classList.add("open");
+    menuItems.forEach(item => {
+      item.addEventListener('click', () => {
+        menuItems.forEach(el => el.classList.remove('active'));
+        item.classList.add('active');
+      });
     });
 
-    closeModal.addEventListener("click", () => modal.classList.remove("open"));
-    laterBtn.addEventListener("click", () => modal.classList.remove("open"));
-    modal.addEventListener("click", (e) => {
-      if (e.target === modal) modal.classList.remove("open");
+    bannerLink.addEventListener('click', () => {
+      menuItems.forEach(el => el.classList.remove('active'));
     });
   </script>
 
