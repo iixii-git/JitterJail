@@ -1,6 +1,6 @@
 {
-  "name": "Steady-Mouse Firmware",
-  "version": "1.0.0",
+  "name": "JitterJail Firmware",
+  "version": "0.9.4",
   "builds": [
     {
       "chipFamily": "ESP32",
