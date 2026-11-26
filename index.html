@@ -17,8 +17,8 @@
       --accent-color: #28969e;
       --accent-glow: rgba(40, 150, 158, 0.45);
       --text-color: #1a1a1a;
-      --kofi-color: #29abe0;
-      --kofi-hover: #1d96c8;
+      --kofi-color: #2f353b;
+      --kofi-hover: #1f2428;
     }
 
     * {
@@ -104,7 +104,7 @@
     /* Banner als Kopf der Menüspalte */
     .sidebar-banner {
       background-color: var(--sidebar-gray);
-      padding: 20px 16px 18px 16px;
+      padding: 18px 16px 16px 16px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -124,10 +124,10 @@
 
     /* Bereich für die Menüpunkte */
     .menu-list {
-      padding: 22px 14px;
+      padding: 16px 14px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 8px;
       overflow-y: auto;
       flex: 1;
     }
@@ -135,11 +135,11 @@
     .menu-item {
       display: flex;
       align-items: center;
-      gap: 16px;
-      padding: 12px 16px;
+      gap: 12px;
+      padding: 8px 14px;
       text-decoration: none;
       color: var(--text-color);
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 600;
       border-radius: 8px;
       background-color: rgba(255, 255, 255, 0.25);
@@ -168,9 +168,29 @@
       transform: scale(1.08);
     }
 
+    /* Farblich hervorgehobener Installieren-Button mit dreifachem Abstand oben */
+    .menu-item-install {
+      margin-top: 16px;
+      background: linear-gradient(135deg, var(--accent-color) 0%, #207b82 100%);
+      color: #ffffff;
+      box-shadow: 0 3px 10px rgba(40, 150, 158, 0.28);
+    }
+
+    .menu-item-install:hover {
+      background: linear-gradient(135deg, #2da6af 0%, #23868e 100%);
+      box-shadow: 0 5px 14px rgba(40, 150, 158, 0.38);
+    }
+
+    .menu-item-install.active {
+      background: #ffffff;
+      color: var(--accent-color);
+      border-left: 4px solid var(--accent-color);
+      box-shadow: 0 3px 10px rgba(40, 150, 158, 0.2);
+    }
+
     .menu-item img {
-      width: 46px;
-      height: 46px;
+      width: 34px;
+      height: 34px;
       object-fit: contain;
       flex-shrink: 0;
       transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -197,7 +217,7 @@
       font-size: 15px;
       font-weight: 700;
       border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(41, 171, 224, 0.28);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
       transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
       -webkit-tap-highlight-color: transparent;
     }
@@ -205,7 +225,7 @@
     .kofi-button:hover {
       background-color: var(--kofi-hover);
       transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(41, 171, 224, 0.38);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.24);
     }
 
     .kofi-button:active {
@@ -399,13 +419,13 @@
         <img src="jitterjail_icon.png" alt="Menu Icon">
         <span>Was ist JitterJail</span>
       </a>
+      <a href="menu1a.html" target="content-frame" class="menu-item">
+        <img src="jitterjail_icon.png" alt="Menu Icon">
+        <span>Erste Schritte</span>
+      </a>
       <a href="menu2.html" target="content-frame" class="menu-item">
         <img src="jitterjail_icon.png" alt="Menu Icon">
         <span>Praxis & Anleitung</span>
-      </a>
-      <a href="menu3.html" target="content-frame" class="menu-item">
-        <img src="jitterjail_icon.png" alt="Menu Icon">
-        <span>JitterJail installieren</span>
       </a>
       <a href="menu4.html" target="content-frame" class="menu-item">
         <img src="jitterjail_icon.png" alt="Menu Icon">
@@ -414,6 +434,10 @@
       <a href="menu5.html" target="content-frame" class="menu-item">
         <img src="jitterjail_icon.png" alt="Menu Icon">
         <span>Rechtliches</span>
+      </a>
+      <a href="menu3.html" target="content-frame" class="menu-item menu-item-install">
+        <img src="jitterjail_icon.png" alt="Menu Icon">
+        <span>JitterJail installieren</span>
       </a>
     </div>
 
