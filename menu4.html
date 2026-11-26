@@ -3,39 +3,256 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>menu1</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>Wer steht hinter JitterJail?</title>
   <style>
-    body {
+    :root {
+      --jj-bg: #f4f7fa;
+      --jj-surface: #ffffff;
+      --jj-text: #1e293b;
+      --jj-text-muted: #475569;
+      --jj-primary: #0284c7;
+      --jj-primary-soft: #e0f2fe;
+      --jj-accent: #0f172a;
+      --jj-border: #e2e8f0;
+      --jj-radius: 16px;
+      --jj-shadow: 0 12px 32px -8px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
-      padding: 28px 20px;
-      font-family: 'Montserrat', sans-serif;
-      background-color: #d9d9d9;
-      color: #1a1a1a;
+      padding: 0;
     }
 
-    @media (min-width: 769px) {
-      body {
-        padding: 40px;
-      }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--jj-bg);
+      color: var(--jj-text);
+      line-height: 1.7;
+      padding: 2rem 1rem;
     }
 
-    h1 {
-      font-size: clamp(22px, 5vw, 28px);
+    .jitterjail-about {
+      max-width: 960px;
+      margin: 0 auto;
+      background: var(--jj-surface);
+      border-radius: var(--jj-radius);
+      box-shadow: var(--jj-shadow);
+      border: 1px solid var(--jj-border);
+      overflow: hidden;
+    }
+
+    .jj-hero {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 2.5rem;
+      padding: 2.75rem;
+      align-items: center;
+    }
+
+    .jj-photo-wrapper {
+      position: relative;
+    }
+
+    .jj-photo {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+      display: block;
+    }
+
+    .jj-badge {
+      display: inline-block;
+      background: var(--jj-primary-soft);
+      color: var(--jj-primary);
       font-weight: 700;
-      margin-bottom: 12px;
-      color: #222;
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      margin-bottom: 0.85rem;
     }
 
-    p {
-      color: #555;
-      font-size: 16px;
-      line-height: 1.5;
+    .jj-title {
+      font-size: clamp(1.75rem, 3vw, 2.35rem);
+      color: var(--jj-accent);
+      line-height: 1.2;
+      margin-bottom: 1.25rem;
+      font-weight: 800;
+    }
+
+    .jj-lead {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--jj-accent);
+      margin-bottom: 1rem;
+    }
+
+    .jj-story p {
+      font-size: 1.05rem;
+      color: var(--jj-text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .jj-story p:last-child {
+      margin-bottom: 0;
+    }
+
+    .jj-highlight {
+      margin-top: 1.5rem;
+      padding: 1rem 1.25rem;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border-left: 4px solid var(--jj-primary);
+      border-radius: 0 10px 10px 0;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--jj-accent);
+    }
+
+    .jj-pillars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      padding: 0 2.75rem 2.75rem;
+    }
+
+    .jj-card {
+      background: #f8fafc;
+      border: 1px solid var(--jj-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .jj-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+    }
+
+    .jj-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: var(--jj-primary-soft);
+      color: var(--jj-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .jj-card h3 {
+      font-size: 1.15rem;
+      color: var(--jj-accent);
+      margin-bottom: 0.45rem;
+      font-weight: 700;
+    }
+
+    .jj-card p {
+      font-size: 0.95rem;
+      color: var(--jj-text-muted);
+      line-height: 1.55;
+    }
+
+    @media (max-width: 820px) {
+      .jj-hero {
+        grid-template-columns: 1fr;
+        padding: 1.75rem;
+        gap: 1.75rem;
+      }
+
+      .jj-photo {
+        max-width: 320px;
+        margin: 0 auto;
+      }
+
+      .jj-pillars {
+        grid-template-columns: 1fr;
+        padding: 0 1.75rem 1.75rem;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>menu1</h1>
-  <p>Hier entsteht der Inhalt für diesen Bereich.</p>
+
+  <section class="jitterjail-about" aria-labelledby="jj-heading">
+    <div class="jj-hero">
+      <div class="jj-photo-wrapper">
+        <img src="stephan.jpg" alt="Stephan, Entwickler von JitterJail" class="jj-photo">
+      </div>
+
+      <div class="jj-story">
+        <span class="jj-badge">Über den Entwickler</span>
+        <h1 id="jj-heading" class="jj-title">Wer steht hinter JitterJail?</h1>
+        
+        <p class="jj-lead">
+          Moin! Ich bin Stephan, 53 Jahre alt, IT-Consultant und leidenschaftlicher Tüftler.
+        </p>
+
+        <p>
+          Vor sechs Jahren habe ich die Diagnose Morbus Parkinson erhalten. Da ich im Berufsleben den ganzen Tag vor dem PC sitze, weiß ich aus eigener Erfahrung, wie anstrengend es ist, kleine Schaltflächen durch einen Tremor immer wieder neu ansteuern zu müssen, bis der Klick endlich sitzt.
+        </p>
+
+        <p>
+          Um die Auswirkungen des Tremors abzumildern, habe ich schon viel Software ausprobiert. Das funktioniert zwar grundsätzlich gut, doch alle diese Lösungen haben einen Haken: Sie kosten Geld – und das teilweise nicht zu knapp. Außerdem lässt sich in geschlossenen Firmennetzwerken oft gar keine Software installieren oder das Programm existiert nicht für das genutzte Betriebssystem.
+        </p>
+
+        <p>
+          Genau deshalb habe ich mir auf die Fahne geschrieben, eine solche Arbeitshilfe für jeden frei und ohne Hürden zugänglich zu machen.
+        </p>
+
+        <div class="jj-highlight">
+          Das war die Geburtsstunde von JitterJail!
+        </div>
+      </div>
+    </div>
+
+    <div class="jj-pillars">
+      <article class="jj-card">
+        <div class="jj-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+        </div>
+        <h3>Plattformunabhängig</h3>
+        <p>Funktioniert unabhängig vom Betriebssystem – selbst in geschlossenen Netzwerken ohne Installationsrechte.</p>
+      </article>
+
+      <article class="jj-card">
+        <div class="jj-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+            <rect x="9" y="9" width="6" height="6"></rect>
+            <line x1="9" y1="1" x2="9" y2="4"></line>
+            <line x1="15" y1="1" x2="15" y2="4"></line>
+            <line x1="9" y1="20" x2="9" y2="23"></line>
+            <line x1="15" y1="20" x2="15" y2="23"></line>
+            <line x1="20" y1="9" x2="23" y2="9"></line>
+            <line x1="20" y1="14" x2="23" y2="14"></line>
+            <line x1="1" y1="9" x2="4" y2="9"></line>
+            <line x1="1" y1="14" x2="4" y2="14"></line>
+          </svg>
+        </div>
+        <h3>Hardwarebasiert</h3>
+        <p>Als eigenständige Hardware-Lösung direkt einsatzbereit, ganz ohne zusätzliche Treiber oder Hintergrundprogramme.</p>
+      </article>
+
+      <article class="jj-card">
+        <div class="jj-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+        </div>
+        <h3>Kostenlos</h3>
+        <p>Aus eigener Erfahrung entwickelt und für alle zugänglich gemacht – ohne Lizenzkosten oder Abo-Modelle.</p>
+      </article>
+    </div>
+  </section>
+
 </body>
 </html>
