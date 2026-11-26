@@ -131,7 +131,6 @@
       color: var(--jj-text-muted);
     }
 
-    /* Custom Button im ESP Web Install Button */
     esp-web-install-button {
       display: inline-block;
     }
@@ -228,43 +227,44 @@
       line-height: 1.55;
     }
 
-    /* Ko-fi Popup Modal */
-    .jj-modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(4px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-      z-index: 9999;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.25s ease, visibility 0.25s ease;
-    }
-
-    .jj-modal-backdrop.is-open {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .jj-modal {
+    /* Natives Ko-fi Popup (<dialog>) im Top-Layer */
+    dialog.jj-modal {
+      margin: auto;
+      padding: 0;
       background: var(--jj-surface);
+      color: var(--jj-text);
       border-radius: var(--jj-radius);
       max-width: 460px;
-      width: 100%;
-      padding: 2.25rem 2rem;
-      box-shadow: 0 24px 48px -12px rgba(15, 23, 42, 0.25);
+      width: calc(100% - 2rem);
+      box-shadow: 0 24px 48px -12px rgba(15, 23, 42, 0.28);
       border: 1px solid var(--jj-border);
-      text-align: center;
-      position: relative;
-      transform: translateY(16px) scale(0.97);
-      transition: transform 0.25s ease;
+      overflow: hidden;
     }
 
-    .jj-modal-backdrop.is-open .jj-modal {
-      transform: translateY(0) scale(1);
+    dialog.jj-modal::backdrop {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(4px);
+    }
+
+    dialog.jj-modal[open] {
+      animation: jjModalIn 0.25s ease-out;
+    }
+
+    @keyframes jjModalIn {
+      from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.97);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .jj-modal-content {
+      padding: 2.25rem 2rem;
+      text-align: center;
+      position: relative;
     }
 
     .jj-modal-close {
@@ -304,7 +304,7 @@
       margin-bottom: 1rem;
     }
 
-    .jj-modal h2 {
+    .jj-modal-content h2 {
       font-size: 1.5rem;
       font-weight: 800;
       color: var(--jj-accent);
@@ -312,7 +312,7 @@
       line-height: 1.25;
     }
 
-    .jj-modal p {
+    .jj-modal-content p {
       font-size: 0.98rem;
       color: var(--jj-text-muted);
       margin-bottom: 1.5rem;
@@ -470,9 +470,9 @@
     </div>
   </section>
 
-  <!-- Ko-fi Popup Modal nach erfolgreichem Flashvorgang -->
-  <div id="jj-kofi-modal" class="jj-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="jj-kofi-title">
-    <div class="jj-modal">
+  <!-- Natives Ko-fi Popup nach erfolgreichem Flashvorgang -->
+  <dialog id="jj-kofi-modal" class="jj-modal" aria-labelledby="jj-kofi-title">
+    <div class="jj-modal-content">
       <button type="button" class="jj-modal-close" id="jj-kofi-close" aria-label="Fenster schließen">×</button>
 
       <div class="jj-modal-badge">
@@ -489,7 +489,6 @@
       </p>
 
       <a href="https://ko-fi.com/jitterjail" target="_blank" rel="noopener noreferrer" class="jj-kofi-btn">
-        <!-- Ko-fi Tassen-Icon -->
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path d="M23.881 8.948c-.773-4.085-4.859-4.593-4.859-4.593H.723c-.604 0-.679.798-.679.798s-.082 7.324-.022 11.822c.164 2.424 2.586 2.672 2.586 2.672s8.267-.023 11.966-.049c2.438-.426 2.683-2.566 2.658-3.734 4.352.24 7.422-2.831 6.649-6.916zm-11.062 3.511c-1.246 1.453-4.011 3.976-4.011 3.976s-.121.119-.31.023c-.076-.057-.108-.09-.108-.09-.443-.441-3.368-3.049-4.034-3.954-.709-.965-1.041-2.7-.091-3.71.951-1.01 3.005-1.086 4.363.407 0 0 1.565-1.782 3.468-.963 1.904.82 1.832 3.011.723 4.311zm6.173.478c-.928.116-1.682.028-1.682.028V7.284h1.77s1.971.551 1.971 2.638c0 1.913-.985 2.667-2.059 3.015z"/>
         </svg>
@@ -500,20 +499,35 @@
         Vielleicht später
       </button>
     </div>
-  </div>
+  </dialog>
 
   <script>
     (function () {
       const modal = document.getElementById('jj-kofi-modal');
       const closeBtn = document.getElementById('jj-kofi-close');
       const skipBtn = document.getElementById('jj-kofi-skip');
+      const installer = document.getElementById('jj-installer');
+
+      let modalShownForCurrentRun = false;
+      let flashSucceeded = false;
+      let flashInProgress = false;
 
       function openKofiModal() {
-        modal.classList.add('is-open');
+        if (modalShownForCurrentRun) return;
+        modalShownForCurrentRun = true;
+        if (typeof modal.showModal === 'function') {
+          if (!modal.open) modal.showModal();
+        } else {
+          modal.setAttribute('open', '');
+        }
       }
 
       function closeKofiModal() {
-        modal.classList.remove('is-open');
+        if (typeof modal.close === 'function' && modal.open) {
+          modal.close();
+        } else {
+          modal.removeAttribute('open');
+        }
       }
 
       closeBtn.addEventListener('click', closeKofiModal);
@@ -521,50 +535,113 @@
       modal.addEventListener('click', function (e) {
         if (e.target === modal) closeKofiModal();
       });
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && modal.classList.contains('is-open')) {
-          closeKofiModal();
+
+      // Liest rekursiv alle verschachtelten Shadow-DOMs sowie label-/aria-label-Attribute aus
+      function inspectDialog(root) {
+        if (!root) return '';
+        let collected = '';
+
+        if (root.nodeType === Node.TEXT_NODE) {
+          return root.textContent || '';
         }
-      });
 
-      // Überwacht den ESP-Web-Tools Installations-Dialog auf erfolgreichen Abschluss
-      let flashSucceeded = false;
+        if (root.attributes) {
+          for (const attr of root.attributes) {
+            if (attr.name === 'label' || attr.name === 'aria-label' || attr.name === 'title') {
+              collected += ' ' + attr.value;
+            }
+          }
+        }
 
+        if (root.shadowRoot) {
+          collected += ' ' + inspectDialog(root.shadowRoot);
+        }
+
+        if (root.childNodes) {
+          for (const child of root.childNodes) {
+            collected += ' ' + inspectDialog(child);
+          }
+        }
+
+        return collected;
+      }
+
+      function evaluateState(dialogNode) {
+        const rawText = inspectDialog(dialogNode).toLowerCase();
+        const internalState = String(dialogNode.state || dialogNode._state || '').toLowerCase();
+        const combined = rawText + ' ' + internalState;
+
+        if (
+          combined.includes('installing') ||
+          combined.includes('erasing') ||
+          combined.includes('writing') ||
+          combined.includes('preparing')
+        ) {
+          flashInProgress = true;
+        }
+
+        const hasError =
+          combined.includes('failed') ||
+          combined.includes('error') ||
+          combined.includes('aborted');
+
+        const isDone =
+          combined.includes('installation complete') ||
+          combined.includes('finished') ||
+          combined.includes('installed') ||
+          (flashInProgress && combined.includes('100%') && !hasError);
+
+        if (isDone && !hasError) {
+          flashSucceeded = true;
+          // 1,2 Sekunden warten, damit der grüne Haken im ESP-Dialog kurz sichtbar bleibt
+          setTimeout(openKofiModal, 1200);
+        }
+      }
+
+      if (installer) {
+        installer.addEventListener('state-changed', function (e) {
+          const state = String((e.detail && e.detail.state) || '').toLowerCase();
+          if (state === 'installing' || state === 'erasing' || state === 'preparing') {
+            flashInProgress = true;
+          }
+          if (state === 'finished' || state === 'complete' || state === 'success') {
+            flashSucceeded = true;
+            setTimeout(openKofiModal, 1200);
+          }
+        });
+      }
+
+      // Überwacht den ESP-Installationsdialog auf Abschluss & Schließen
       const bodyObserver = new MutationObserver(function (mutations) {
         for (const mutation of mutations) {
-          // 1. Prüfen, ob der ESP-Installationsdialog geöffnet wurde
           for (const node of mutation.addedNodes) {
             if (node.nodeName && node.nodeName.toLowerCase() === 'ewt-install-dialog') {
+              modalShownForCurrentRun = false;
               flashSucceeded = false;
+              flashInProgress = false;
 
-              // Shadow-DOM des Dialogs auf Abschlussmeldung ("Installation complete") beobachten
-              const watchDialogShadow = function () {
-                if (!node.shadowRoot) {
-                  requestAnimationFrame(watchDialogShadow);
+              const pollInterval = setInterval(function () {
+                if (!document.body.contains(node)) {
+                  clearInterval(pollInterval);
                   return;
                 }
-                const shadowObserver = new MutationObserver(function () {
-                  const text = (node.shadowRoot.textContent || '').toLowerCase();
-                  if (text.includes('installation complete') || text.includes('installed')) {
-                    flashSucceeded = true;
-                  }
-                });
-                shadowObserver.observe(node.shadowRoot, {
-                  childList: true,
-                  subtree: true,
-                  characterData: true
-                });
-              };
-              watchDialogShadow();
+                evaluateState(node);
+              }, 400);
+
+              node.addEventListener('closed', function () {
+                clearInterval(pollInterval);
+                evaluateState(node);
+                if (flashSucceeded) {
+                  setTimeout(openKofiModal, 200);
+                }
+              });
             }
           }
 
-          // 2. Sobald der Dialog nach erfolgreichem Flash geschlossen wird, Ko-fi-Popup öffnen
           for (const node of mutation.removedNodes) {
             if (node.nodeName && node.nodeName.toLowerCase() === 'ewt-install-dialog') {
               if (flashSucceeded) {
-                setTimeout(openKofiModal, 250);
-                flashSucceeded = false;
+                setTimeout(openKofiModal, 200);
               }
             }
           }
