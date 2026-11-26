@@ -3,9 +3,9 @@
   "version": "0.9.4",
   "builds": [
     {
-      "chipFamily": "ESP32",
+      "chipFamily": "ESP32 S3",
       "parts": [
-        { "path": "S3XY-Button-auto.factory.1+2.bin", "offset": 0 }
+        { "path": "JitterJail_factory.bin", "offset": 0 }
       ]
     }
   ]
