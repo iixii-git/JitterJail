@@ -71,7 +71,7 @@
       100% { transform: translate(0, 0) rotate(0deg); }
     }
 
-    /* Animierter Pfeil nur auf mobilen Bildschirmen Richtung Hamburger-Menü oben rechts */
+    /* Animierter Pfeil nur auf mobilen Bildschirmen direkt nach oben Richtung Hamburger-Menü */
     .jj-mobile-menu-hint {
       display: none;
     }
@@ -95,25 +95,18 @@
         font-weight: 700;
         cursor: pointer;
         -webkit-tap-highlight-color: transparent;
-        transition: opacity 0.35s ease, transform 0.35s ease;
-      }
-
-      .jj-mobile-menu-hint.is-hidden {
-        opacity: 0;
-        transform: translateY(-8px);
-        pointer-events: none;
       }
 
       .jj-hint-arrow {
-        animation: jj-point-topright 1.15s ease-in-out infinite;
+        animation: jj-point-up 1.15s ease-in-out infinite;
       }
 
-      @keyframes jj-point-topright {
+      @keyframes jj-point-up {
         0%, 100% {
-          transform: translate(0, 0);
+          transform: translateY(0);
         }
         50% {
-          transform: translate(4px, -4px);
+          transform: translateY(-5px);
         }
       }
     }
@@ -123,7 +116,7 @@
   <button type="button" class="jj-mobile-menu-hint" id="jj-mobile-menu-hint" aria-label="Menü öffnen">
     <span>Menü</span>
     <svg class="jj-hint-arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M5 19L18 6M18 6H8M18 6V16" stroke="#28969e" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M12 19V5M12 5L6 11M12 5L18 11" stroke="#28969e" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   </button>
 
@@ -160,7 +153,7 @@
       startJitter(1200);
     });
 
-    // Mobiler Pfeil-Hinweis: öffnet das Eltern-Menü (falls im iframe) und blendet sanft aus
+    // Mobiler Pfeil-Hinweis: öffnet das Eltern-Menü (falls im iframe) und bleibt dauerhaft sichtbar
     if (menuHint) {
       menuHint.addEventListener('click', () => {
         try {
@@ -173,14 +166,9 @@
             }
           }
         } catch (err) {
-          // Falls Cross-Origin aktiv ist, nur ausblenden
+          // Falls Cross-Origin aktiv ist, ignorieren
         }
-        menuHint.classList.add('is-hidden');
       });
-
-      setTimeout(() => {
-        menuHint.classList.add('is-hidden');
-      }, 8000);
     }
   </script>
 </body>
