@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Imprint & Disclaimer – JitterJail</title>
+  <style>
+    :root {
+      --jj-bg: #f4f7fa;
+      --jj-surface: #ffffff;
+      --jj-text: #1e293b;
+      --jj-text-muted: #475569;
+      --jj-primary: #0284c7;
+      --jj-primary-hover: #0369a1;
+      --jj-primary-soft: #e0f2fe;
+      --jj-accent: #0f172a;
+      --jj-border: #e2e8f0;
+      --jj-warn-bg: #fffbeb;
+      --jj-warn-border: #f59e0b;
+      --jj-warn-text: #78350f;
+      --jj-radius: 16px;
+      --jj-shadow: 0 12px 32px -8px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--jj-bg);
+      color: var(--jj-text);
+      line-height: 1.7;
+      padding: 2rem 1rem;
+    }
+
+    .jitterjail-section {
+      max-width: 960px;
+      margin: 0 auto;
+      background: var(--jj-surface);
+      border-radius: var(--jj-radius);
+      box-shadow: var(--jj-shadow);
+      border: 1px solid var(--jj-border);
+      overflow: hidden;
+    }
+
+    .jj-intro {
+      padding: 2.75rem 2.75rem 2rem;
+    }
+
+    .jj-badge {
+      display: inline-block;
+      background: var(--jj-primary-soft);
+      color: var(--jj-primary);
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      margin-bottom: 0.85rem;
+    }
+
+    .jj-title {
+      font-size: clamp(1.75rem, 3vw, 2.35rem);
+      color: var(--jj-accent);
+      line-height: 1.2;
+      margin-bottom: 1.25rem;
+      font-weight: 800;
+    }
+
+    .jj-lead {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--jj-accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .jj-block {
+      padding: 0 2.75rem 2.25rem;
+    }
+
+    /* Prominent Medical Device Disclaimer */
+    .jj-medical-alert {
+      background: var(--jj-warn-bg);
+      border: 1px solid #fde68a;
+      border-left: 5px solid var(--jj-warn-border);
+      border-radius: 12px;
+      padding: 1.4rem 1.5rem;
+      color: var(--jj-warn-text);
+    }
+
+    .jj-medical-alert-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 1.12rem;
+      font-weight: 800;
+      color: #92400e;
+      margin-bottom: 0.55rem;
+    }
+
+    .jj-medical-alert p {
+      font-size: 0.97rem;
+      line-height: 1.6;
+      margin-bottom: 0.6rem;
+    }
+
+    .jj-medical-alert p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Two-column grid for Imprint & Project Nature */
+    .jj-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+
+    .jj-card {
+      background: #f8fafc;
+      border: 1px solid var(--jj-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .jj-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .jj-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--jj-primary-soft);
+      color: var(--jj-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .jj-card h2 {
+      font-size: 1.15rem;
+      color: var(--jj-accent);
+      font-weight: 800;
+      line-height: 1.3;
+    }
+
+    .jj-card p {
+      font-size: 0.96rem;
+      color: var(--jj-text-muted);
+      line-height: 1.6;
+      margin-bottom: 0.75rem;
+    }
+
+    .jj-card p:last-child {
+      margin-bottom: 0;
+    }
+
+    .jj-contact-list {
+      list-style: none;
+      font-size: 0.96rem;
+      color: var(--jj-text);
+      line-height: 1.65;
+    }
+
+    .jj-contact-list li {
+      margin-bottom: 0.35rem;
+    }
+
+    .jj-contact-list a {
+      color: var(--jj-primary);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .jj-contact-list a:hover {
+      text-decoration: underline;
+    }
+
+    /* Individual legal sections */
+    .jj-legal-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 1.15rem;
+    }
+
+    .jj-legal-item {
+      background: #f8fafc;
+      border: 1px solid var(--jj-border);
+      border-radius: 12px;
+      padding: 1.4rem 1.5rem;
+    }
+
+    .jj-legal-item h3 {
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: var(--jj-accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .jj-legal-item p {
+      font-size: 0.95rem;
+      color: var(--jj-text-muted);
+      line-height: 1.65;
+      margin-bottom: 0.6rem;
+    }
+
+    .jj-legal-item p:last-child {
+      margin-bottom: 0;
+    }
+
+    .jj-footer-note {
+      padding: 0 2.75rem 2.5rem;
+      font-size: 0.85rem;
+      color: var(--jj-text-muted);
+      text-align: center;
+    }
+
+    @media (max-width: 820px) {
+      .jj-intro {
+        padding: 1.75rem 1.75rem 1.5rem;
+      }
+
+      .jj-block {
+        padding: 0 1.75rem 1.75rem;
+      }
+
+      .jj-grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .jj-footer-note {
+        padding: 0 1.75rem 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="jitterjail-section" aria-labelledby="jj-legal-heading">
+    <!-- Header -->
+    <div class="jj-intro">
+      <span class="jj-badge">Legal & Safety</span>
+      <h1 id="jj-legal-heading" class="jj-title">Imprint & Disclaimer</h1>
+      <p class="jj-lead">
+        Transparency, responsibility, and important safety notices regarding the use of the JitterJail firmware and this website.
+      </p>
+    </div>
+
+    <!-- Important Notice: Not a Medical Device -->
+    <div class="jj-block">
+      <div class="jj-medical-alert" role="note" aria-labelledby="jj-med-title">
+        <div id="jj-med-title" class="jj-medical-alert-header">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          Important Notice: Not a Medical Device
+        </div>
+        <p>
+          <strong>JitterJail is not a medical device</strong> within the meaning of the EU Medical Devices Regulation (Regulation (EU) 2017/745 – MDR), the German Medical Devices Law Implementation Act (MPDG), or <strong>U.S. Food and Drug Administration (FDA) regulations</strong>. It is not FDA-cleared or approved and holds no medical certification.
+        </p>
+        <p>
+          JitterJail is strictly a <strong>technical input and usability aid</strong> (hardware-based signal smoothing for computer mice). The project is not intended for the diagnosis, therapy, treatment, monitoring, or medical alleviation of diseases (such as Parkinson's disease or essential tremor). Nothing on this website constitutes medical or therapeutic advice, nor does it replace consultation or treatment by physicians or healthcare professionals.
+        </p>
+      </div>
+    </div>
+
+    <!-- Imprint & Project Nature -->
+    <div class="jj-block">
+      <div class="jj-grid-2">
+        <!-- Imprint -->
+        <article class="jj-card">
+          <div class="jj-card-header">
+            <div class="jj-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
+            <h2>Imprint</h2>
+          </div>
+          <p><strong>Information pursuant to Section 5 of the German Digital Services Act (DDG):</strong></p>
+          <ul class="jj-contact-list">
+            <li><strong>Stephan Scherer</strong></li>
+            <li>Heidweg 53</li>
+            <li>21255 Tostedt</li>
+            <li>Germany</li>
+            <li style="margin-top: 0.65rem;">
+              <strong>Email:</strong> <a href="mailto:hello@jitterjail.click">hello@jitterjail.click</a>
+            </li>
+          </ul>
+          <p style="margin-top: 0.85rem; font-size: 0.9rem;">
+            <strong>Person responsible for content under Section 18 (2) MStV:</strong><br>
+            Stephan Scherer, address as above.
+          </p>
+        </article>
+
+        <!-- Project Nature & Dispute Resolution -->
+        <article class="jj-card">
+          <div class="jj-card-header">
+            <div class="jj-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </div>
+            <h2>Project Nature & Notices</h2>
+          </div>
+          <p>
+            <strong>Private, free project:</strong><br>
+            JitterJail is provided free of charge as a private initiative. There are no purchase, license, or support contracts. Any contributions via platforms such as Ko-fi or commissions from affiliate links go solely toward covering ongoing infrastructure and development costs.
+          </p>
+          <p>
+            <strong>Dispute resolution:</strong><br>
+            We are neither willing nor obligated to participate in dispute resolution proceedings before a consumer arbitration board.
+          </p>
+        </article>
+      </div>
+    </div>
+
+    <!-- Detailed Disclaimer -->
+    <div class="jj-block">
+      <div class="jj-legal-stack">
+        <article class="jj-legal-item">
+          <h3>1. Disclaimer for Firmware, Hardware & Use (At Your Own Risk)</h3>
+          <p>
+            The JitterJail firmware as well as instructions for flashing and operating microcontrollers (such as M5Stack / ESP32-S3) are provided free of charge (“as is”) without any express or implied warranty of any kind.
+          </p>
+          <p>
+            Flashing the firmware and using the hardware solution take place <strong>at your own responsibility and risk</strong>. No liability is accepted for direct or indirect damage to hardware, connected computers, peripherals, data loss, system outages, or lost profits to the extent permitted by law. Liability for damages resulting from injury to life, limb, or health, as well as damages caused by intentional or grossly negligent breach of duty, remains unaffected.
+          </p>
+        </article>
+
+        <article class="jj-legal-item">
+          <h3>2. Liability for Content & Guides</h3>
+          <p>
+            The contents of this website have been created with the utmost care. However, no guarantee can be given for the accuracy, completeness, compatibility with specific operating systems or devices, or up-to-dateness of the content and technical guides.
+          </p>
+        </article>
+
+        <article class="jj-legal-item">
+          <h3>3. Liability for External Links</h3>
+          <p>
+            This website contains links to external third-party websites (such as GitHub, Ko-fi, or hardware manufacturers) over whose content we have no control. Therefore, no liability can be assumed for such external content. The respective provider or operator of the linked pages is always responsible for their content. Illegal content was not recognizable at the time of linking.
+          </p>
+        </article>
+
+        <article class="jj-legal-item">
+          <h3>4. Notice on Affiliate Links (Amazon Associates Program)</h3>
+          <p>
+            <strong>As an Amazon Associate I earn from qualifying purchases.</strong>
+          </p>
+          <p>
+            Hardware recommendations on this website sometimes use affiliate links (advertising links, e.g., marked with “*” or “Ad”) to the Amazon EU S.à r.l. affiliate program. If you visit Amazon via such a link and make a purchase, the operator of this website receives a small referral commission. This causes <strong>no extra cost</strong> for you – the purchase price remains identical. Recommended hardware is selected independently and solely based on technical suitability for the project.
+          </p>
+        </article>
+
+        <article class="jj-legal-item">
+          <h3>5. Copyright & Trademark Notices</h3>
+          <p>
+            Content, texts, graphics, and original software components created on this website are subject to German copyright law. Product, hardware, and operating system names mentioned (such as M5Stack, Espressif, ESP32, Bluetooth, Windows, macOS, iOS, Linux, Amazon, or Ko-fi) are registered trademarks or designations of their respective owners and are used here solely to describe technical compatibility.
+          </p>
+        </article>
+
+        <article class="jj-legal-item">
+          <h3>6. Privacy Notice for the Website & Web Flasher</h3>
+          <p>
+            <strong>Web Flasher (Web Serial API):</strong> Flashing via the browser takes place completely locally between your browser and the USB-connected microcontroller. No device data or personal information is transmitted to the operator of this website.
+          </p>
+          <p>
+            <strong>Hosting, external services & affiliate links:</strong> This website is hosted via GitHub Pages (GitHub Inc.), where technically necessary connection data (such as IP addresses in server log files) is processed. Only when you actively click external links or affiliate links (e.g., to Amazon EU S.à r.l. or Ko-fi) are you redirected to the respective target provider's site. In doing so, your browser transmits technical connection data (such as IP address and referrer) to that provider, which may set its own cookies to attribute commissions. The privacy policies of the respective target providers apply.
+          </p>
+          <p>
+            <strong>Web analytics with GoatCounter:</strong>
+            This website uses the open-source web analytics service GoatCounter, operated by Martin Tournoij (Ireland), to statistically evaluate page usage and optimize our offering.
+          </p>
+          <p>
+            Scope and operation of data processing:<br>
+            GoatCounter operates without cookies and stores no information (such as in <code>localStorage</code>) on your device. No persistent user profiles are created, and visitors are not tracked across multiple days or websites.
+            When a page is loaded, technical information such as the requested URL, referrer (previously visited page), browser type, operating system, screen size, and approximate country of origin is recorded. To distinguish multiple page views within a single session (up to 8 hours), GoatCounter briefly generates a random hash in memory from your IP address, user agent, and page name. Your IP address is never stored in plain text or permanently in a database. Ultimately, we only receive anonymized, aggregated statistics.
+          </p>
+          <p>
+            Server location and recipients:<br>
+            Processing takes place on servers operated by Hetzner Online GmbH in Germany and Finland (within the European Union). Data is not shared with third parties or transferred to non-EU countries.
+          </p>
+          <p>
+            Legal basis & opt-out:<br>
+            Processing is carried out on the basis of our legitimate interest in privacy-friendly, anonymized reach measurement and technical optimization of our website pursuant to Art. 6 (1) (f) GDPR.
+            You can prevent collection by GoatCounter at any time by disabling JavaScript in your browser, enabling your browser's “Do Not Track” feature, or blocking the domain <code>gc.zgo.at</code> via a script or ad blocker.
+          </p>
+        </article>
+      </div>
+    </div>
+
+    <div class="jj-footer-note">
+      Last updated: November 2026 · JitterJail – Private assistive project by Stephan Scherer
+    </div>
+  </section>
+
+</body>
+</html>

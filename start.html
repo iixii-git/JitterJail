@@ -16,6 +16,7 @@
       overflow: hidden;
       padding: 20px;
       box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
     .logo-container {
@@ -23,6 +24,11 @@
       align-items: center;
       justify-content: center;
       animation: pulse-and-float 4s ease-in-out infinite;
+    }
+
+    /* Wenn das Logo zittert, pausiert die Schwebe-Animation auf dem Container */
+    .logo-container.is-jittering {
+      animation: none;
     }
 
     img {
@@ -34,7 +40,7 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Zitter-Animation bei Mauskontakt oder Antippen auf dem Handy */
+    /* Zitter-Animation bei Mauskontakt, Antippen oder automatisch nach 3 Sekunden */
     img:hover,
     img:active,
     img.is-jittering {
@@ -64,25 +70,118 @@
       80%  { transform: translate(2px, 3px) rotate(0.5deg); }
       100% { transform: translate(0, 0) rotate(0deg); }
     }
+
+    /* Animierter Pfeil nur auf mobilen Bildschirmen Richtung Hamburger-Menü oben rechts */
+    .jj-mobile-menu-hint {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .jj-mobile-menu-hint {
+        position: fixed;
+        top: 14px;
+        right: 16px;
+        z-index: 9999;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255, 255, 255, 0.95);
+        color: #0f172a;
+        border: 2px solid #28969e;
+        border-radius: 999px;
+        padding: 6px 12px 6px 14px;
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.2);
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        transition: opacity 0.35s ease, transform 0.35s ease;
+      }
+
+      .jj-mobile-menu-hint.is-hidden {
+        opacity: 0;
+        transform: translateY(-8px);
+        pointer-events: none;
+      }
+
+      .jj-hint-arrow {
+        animation: jj-point-topright 1.15s ease-in-out infinite;
+      }
+
+      @keyframes jj-point-topright {
+        0%, 100% {
+          transform: translate(0, 0);
+        }
+        50% {
+          transform: translate(4px, -4px);
+        }
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="logo-container">
+  <button type="button" class="jj-mobile-menu-hint" id="jj-mobile-menu-hint" aria-label="Menü öffnen">
+    <span>Menü</span>
+    <svg class="jj-hint-arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M5 19L18 6M18 6H8M18 6V16" stroke="#28969e" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <div class="logo-container" id="logo-container">
     <img src="JitterJail_klein_sw.png" alt="JitterJail Logo S/W" id="start-logo">
   </div>
 
   <script>
+    const logoContainer = document.getElementById('logo-container');
     const logo = document.getElementById('start-logo');
+    const menuHint = document.getElementById('jj-mobile-menu-hint');
     let jitterTimeout;
 
-    // Löst das Zittern auf Touchscreens beim Antippen für 1,2 Sekunden aus
-    logo.addEventListener('click', () => {
+    function startJitter(durationMs) {
       logo.classList.add('is-jittering');
+      logoContainer.classList.add('is-jittering');
       clearTimeout(jitterTimeout);
-      jitterTimeout = setTimeout(() => {
-        logo.classList.remove('is-jittering');
-      }, 1200);
+      if (durationMs) {
+        jitterTimeout = setTimeout(() => {
+          logo.classList.remove('is-jittering');
+          logoContainer.classList.remove('is-jittering');
+        }, durationMs);
+      }
+    }
+
+    // Nach 3 Sekunden automatisch zittern lassen (für 2,5 Sekunden)
+    const autoJitterTimer = setTimeout(() => {
+      startJitter(2500);
+    }, 3000);
+
+    // Bei Klick/Touch das Zittern für 1,2 Sekunden auslösen
+    logo.addEventListener('click', () => {
+      clearTimeout(autoJitterTimer);
+      startJitter(1200);
     });
+
+    // Mobiler Pfeil-Hinweis: öffnet das Eltern-Menü (falls im iframe) und blendet sanft aus
+    if (menuHint) {
+      menuHint.addEventListener('click', () => {
+        try {
+          if (window.parent && window.parent !== window) {
+            const parentDoc = window.parent.document;
+            const sidebar = parentDoc.getElementById('sidebar');
+            const toggle = parentDoc.getElementById('menu-toggle');
+            if (sidebar && !sidebar.classList.contains('open') && toggle) {
+              toggle.click();
+            }
+          }
+        } catch (err) {
+          // Falls Cross-Origin aktiv ist, nur ausblenden
+        }
+        menuHint.classList.add('is-hidden');
+      });
+
+      setTimeout(() => {
+        menuHint.classList.add('is-hidden');
+      }, 8000);
+    }
   </script>
 </body>
 </html>

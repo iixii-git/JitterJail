@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guide, Tips & Video – JitterJail</title>
+  <style>
+    :root {
+      --jj-bg: #f4f7fa;
+      --jj-surface: #ffffff;
+      --jj-text: #1e293b;
+      --jj-text-muted: #475569;
+      --jj-primary: #0284c7;
+      --jj-primary-hover: #0369a1;
+      --jj-primary-soft: #e0f2fe;
+      --jj-accent: #0f172a;
+      --jj-border: #e2e8f0;
+      --jj-radius: 16px;
+      --jj-shadow: 0 12px 32px -8px rgba(15, 23, 42, 0.08);
+
+      /* LED status colors */
+      --led-white: #f8fafc;
+      --led-purple: #9333ea;
+      --led-cyan: #06b6d4;
+      --led-red: #ef4444;
+      --led-blue: #2563eb;
+      --led-green: #16a34a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--jj-bg);
+      color: var(--jj-text);
+      line-height: 1.7;
+      padding: 2rem 1rem;
+    }
+
+    .jitterjail-section {
+      max-width: 960px;
+      margin: 0 auto;
+      background: var(--jj-surface);
+      border-radius: var(--jj-radius);
+      box-shadow: var(--jj-shadow);
+      border: 1px solid var(--jj-border);
+      overflow: hidden;
+    }
+
+    .jj-intro {
+      padding: 2.75rem 2.75rem 2rem;
+    }
+
+    .jj-badge {
+      display: inline-block;
+      background: var(--jj-primary-soft);
+      color: var(--jj-primary);
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      margin-bottom: 0.85rem;
+    }
+
+    .jj-title {
+      font-size: clamp(1.75rem, 3vw, 2.35rem);
+      color: var(--jj-accent);
+      line-height: 1.2;
+      margin-bottom: 1.25rem;
+      font-weight: 800;
+    }
+
+    .jj-lead {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--jj-accent);
+      margin-bottom: 1rem;
+    }
+
+    .jj-story p {
+      font-size: 1.05rem;
+      color: var(--jj-text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .jj-story p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Section headings */
+    .jj-block {
+      padding: 0 2.75rem 2.5rem;
+    }
+
+    .jj-block-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.15rem;
+    }
+
+    .jj-block-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--jj-accent);
+    }
+
+    .jj-pdf-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--jj-primary);
+      background: var(--jj-primary-soft);
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .jj-pdf-link:hover {
+      background: var(--jj-primary);
+      color: #ffffff;
+    }
+
+    /* Video showcase */
+    .jj-video-box {
+      background: #f8fafc;
+      border: 1px solid var(--jj-border);
+      border-radius: 14px;
+      padding: 1.25rem;
+    }
+
+    .jj-video-frame {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #0f172a;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.14);
+    }
+
+    .jj-video-frame video {
+      width: 100%;
+      height: auto;
+      display: block;
+      max-height: 520px;
+    }
+
+    .jj-video-caption {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .jj-compare-pill {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      background: #ffffff;
+      border: 1px solid var(--jj-border);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      font-size: 0.92rem;
+      color: var(--jj-text-muted);
+      line-height: 1.45;
+    }
+
+    .jj-compare-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 0.35rem;
+    }
+
+    .jj-compare-dot.off {
+      background: #ef4444;
+    }
+
+    .jj-compare-dot.on {
+      background: #16a34a;
+    }
+
+    .jj-compare-pill strong {
+      display: block;
+      color: var(--jj-accent);
+      font-size: 0.95rem;
+      margin-bottom: 0.15rem;
+    }
+
+    /* Quick guide & LED status */
+    .jj-guide-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .jj-guide-card {
+      background: #f8fafc;
+      border: 1px solid var(--jj-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .jj-guide-card-title {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--jj-accent);
+      margin-bottom: 1rem;
+      padding-bottom: 0.65rem;
+      border-bottom: 1px solid var(--jj-border);
+    }
+
+    .jj-step-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      background: var(--jj-primary);
+      color: #ffffff;
+      font-size: 0.85rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .jj-led-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .jj-led-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 0.95rem;
+      color: var(--jj-text-muted);
+      line-height: 1.5;
+    }
+
+    .jj-led {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 0.32rem;
+      border: 1px solid rgba(15, 23, 42, 0.18);
+    }
+
+    .jj-led.white {
+      background: var(--led-white);
+      box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.25);
+    }
+    .jj-led.purple {
+      background: var(--led-purple);
+      box-shadow: 0 0 8px rgba(147, 51, 234, 0.45);
+    }
+    .jj-led.cyan {
+      background: var(--led-cyan);
+      box-shadow: 0 0 8px rgba(6, 182, 212, 0.45);
+    }
+    .jj-led.red {
+      background: var(--led-red);
+      box-shadow: 0 0 8px rgba(239, 68, 68, 0.45);
+    }
+    .jj-led.blue {
+      background: var(--led-blue);
+      box-shadow: 0 0 8px rgba(37, 99, 235, 0.45);
+    }
+    .jj-led.green {
+      background: var(--led-green);
+      box-shadow: 0 0 8px rgba(22, 163, 74, 0.45);
+    }
+
+    .jj-led-item strong {
+      color: var(--jj-accent);
+    }
+
+    .jj-action-note {
+      margin-top: 1rem;
+      padding: 0.75rem 0.95rem;
+      background: #ffffff;
+      border: 1px solid var(--jj-border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      color: var(--jj-text);
+    }
+
+    .jj-action-note kbd {
+      display: inline-block;
+      background: var(--jj-primary-soft);
+      color: var(--jj-primary);
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.82rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 5px;
+    }
+
+    /* Settings menu box */
+    .jj-menu-box {
+      background: #f8fafc;
+      border: 1px solid var(--jj-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .jj-menu-steps {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .jj-sub-box {
+      background: #ffffff;
+      border: 1px solid var(--jj-border);
+      border-radius: 10px;
+      padding: 1.1rem 1.2rem;
+    }
+
+    .jj-sub-box h4 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--jj-accent);
+      margin-bottom: 0.35rem;
+    }
+
+    .jj-sub-timing {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--jj-primary);
+      background: var(--jj-primary-soft);
+      padding: 0.15rem 0.6rem;
+      border-radius: 999px;
+      margin-bottom: 0.75rem;
+    }
+
+    .jj-inline-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .jj-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #f8fafc;
+      border: 1px solid var(--jj-border);
+      border-radius: 999px;
+      padding: 0.25rem 0.7rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--jj-accent);
+    }
+
+    .jj-chip .jj-led {
+      margin-top: 0;
+      width: 11px;
+      height: 11px;
+    }
+
+    .jj-sub-confirm {
+      font-size: 0.88rem;
+      color: var(--jj-text-muted);
+    }
+
+    /* Right-click callout box */
+    .jj-highlight {
+      padding: 1.15rem 1.35rem;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border-left: 4px solid var(--jj-primary);
+      border-radius: 0 12px 12px 0;
+      color: var(--jj-accent);
+    }
+
+    .jj-highlight-title {
+      font-weight: 800;
+      font-size: 1.05rem;
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .jj-highlight ul {
+      margin-left: 1.2rem;
+      font-size: 0.96rem;
+      color: var(--jj-text);
+      line-height: 1.6;
+    }
+
+    /* Three practical tip cards */
+    .jj-pillars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      padding: 0 2.75rem 2.75rem;
+    }
+
+    .jj-card {
+      background: #f8fafc;
+      border: 1px solid var(--jj-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .jj-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+    }
+
+    .jj-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: var(--jj-primary-soft);
+      color: var(--jj-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .jj-card h3 {
+      font-size: 1.12rem;
+      color: var(--jj-accent);
+      margin-bottom: 0.45rem;
+      font-weight: 700;
+    }
+
+    .jj-card p {
+      font-size: 0.95rem;
+      color: var(--jj-text-muted);
+      line-height: 1.55;
+    }
+
+    @media (max-width: 820px) {
+      .jj-intro {
+        padding: 1.75rem 1.75rem 1.5rem;
+      }
+
+      .jj-block {
+        padding: 0 1.75rem 2rem;
+      }
+
+      .jj-video-caption,
+      .jj-guide-grid,
+      .jj-menu-steps,
+      .jj-pillars {
+        grid-template-columns: 1fr;
+      }
+
+      .jj-pillars {
+        padding: 0 1.75rem 1.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="jitterjail-section" aria-labelledby="jj-guide-heading">
+    <!-- Header -->
+    <div class="jj-intro">
+      <div class="jj-story">
+        <span class="jj-badge">Usage, Guide & Tips</span>
+        <h1 id="jj-guide-heading" class="jj-title">Using JitterJail Every Day</h1>
+
+        <p class="jj-lead">
+          From initial Bluetooth pairing to fine-tuning filter type and damping strength: here you'll find the demo video, LED status overview, and practical tips for daily use.
+        </p>
+      </div>
+    </div>
+
+    <!-- 1. Video Demonstration -->
+    <div class="jj-block">
+      <div class="jj-block-header">
+        <h2 class="jj-block-title">JitterJail in Action (Before / After)</h2>
+      </div>
+
+      <div class="jj-video-box">
+        <div class="jj-video-frame">
+          <video controls playsinline preload="metadata" src="video_1.mp4">
+            Your browser does not support HTML5 video playback.
+          </video>
+        </div>
+
+        <div class="jj-video-caption">
+          <div class="jj-compare-pill">
+            <span class="jj-compare-dot off" aria-hidden="true"></span>
+            <div>
+              <strong>Without JitterJail (Off)</strong>
+              Tremor-induced zigzag movements and accidental right-clicks make precise selection in Excel difficult.
+            </div>
+          </div>
+
+          <div class="jj-compare-pill">
+            <span class="jj-compare-dot on" aria-hidden="true"></span>
+            <div>
+              <strong>With JitterJail (On)</strong>
+              A single short button press is all it takes: the cursor glides smoothly across cells and selects accurately without misclicks.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Quick Guide: Function Settings & LED Status -->
+    <div class="jj-block">
+      <div class="jj-block-header">
+        <h2 class="jj-block-title">Quick Guide: Function Settings & LED Status</h2>
+        <a href="Flußdiagram_JitterJail.pdf" target="_blank" rel="noopener noreferrer" class="jj-pdf-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Quick Guide (PDF)
+        </a>
+      </div>
+
+      <!-- Startup / Pairing & Normal Operation -->
+      <div class="jj-guide-grid">
+        <!-- Card A: Power On & Connect -->
+        <div class="jj-guide-card">
+          <div class="jj-guide-card-title">
+            <span class="jj-step-tag">1</span>
+            Power On & Connect Mouse
+          </div>
+
+          <ul class="jj-led-list">
+            <li class="jj-led-item">
+              <span class="jj-led white" aria-hidden="true"></span>
+              <div>
+                <strong>Power On (4 sec) – LED blinks White:</strong><br>
+                Right after plugging in, JitterJail waits 4 seconds for your choice.
+              </div>
+            </li>
+            <li class="jj-led-item">
+              <span class="jj-led purple" aria-hidden="true"></span>
+              <div>
+                <strong>Press button → LED Purple (Pairing Mode):</strong><br>
+                For a <em>new</em> Bluetooth mouse. Start pairing on the mouse.
+              </div>
+            </li>
+            <li class="jj-led-item">
+              <span class="jj-led cyan" aria-hidden="true"></span>
+              <div>
+                <strong>Wait 4 sec → LED Cyan (Reconnect):</strong><br>
+                Automatically reconnects to your already <em>paired</em> mouse.
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Card B: Normal Operation (Connected) -->
+        <div class="jj-guide-card">
+          <div class="jj-guide-card-title">
+            <span class="jj-step-tag">2</span>
+            Normal Operation (Mouse Connected)
+          </div>
+
+          <ul class="jj-led-list">
+            <li class="jj-led-item">
+              <span class="jj-led red" aria-hidden="true"></span>
+              <div>
+                <strong>LED Red – Spring Filter Active:</strong><br>
+                Gentle, spring-like damping of tremor movements.
+              </div>
+            </li>
+            <li class="jj-led-item">
+              <span class="jj-led blue" aria-hidden="true"></span>
+              <div>
+                <strong>LED Blue – 1-Euro Filter Active:</strong><br>
+                Dynamic smoothing for both slow and fast movements.
+              </div>
+            </li>
+            <li class="jj-led-item">
+              <span class="jj-led green" aria-hidden="true"></span>
+              <div>
+                <strong>LED Green – Off (Bypass):</strong><br>
+                Filter paused; mouse and right click work completely normally.
+              </div>
+            </li>
+          </ul>
+
+          <div class="jj-action-note">
+            <kbd>Short press (< 2 sec)</kbd> toggles directly between <strong>ON (Red/Blue)</strong> and <strong>OFF / Bypass (Green)</strong>.
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings Menu (Hold button for 2 sec) -->
+      <div class="jj-menu-box">
+        <div class="jj-guide-card-title" style="border-bottom: none; padding-bottom: 0; margin-bottom: 0.25rem;">
+          <span class="jj-step-tag">3</span>
+          Adjust Filter & Damping: <span style="color: var(--jj-primary); font-weight: 700;">Hold button for 2 sec</span>
+        </div>
+        <p style="font-size: 0.94rem; color: var(--jj-text-muted);">
+          During normal operation, hold the button for 2 seconds to set the filter type and damping strength one after another:
+        </p>
+
+        <div class="jj-menu-steps">
+          <div class="jj-sub-box">
+            <h4>Menu 1: Choose Filter Type</h4>
+            <span class="jj-sub-timing">Color changes every 3 sec</span>
+            <div class="jj-inline-chips">
+              <span class="jj-chip"><span class="jj-led red"></span> Red = Spring Filter</span>
+              <span class="jj-chip"><span class="jj-led blue"></span> Blue = 1-Euro Filter</span>
+            </div>
+            <p class="jj-sub-confirm">
+              → Confirm with a <strong>short press on desired color</strong> and continue to Menu 2.
+            </p>
+          </div>
+
+          <div class="jj-sub-box">
+            <h4>Menu 2: Choose Damping Strength</h4>
+            <span class="jj-sub-timing">Color changes every 2 sec</span>
+            <div class="jj-inline-chips">
+              <span class="jj-chip"><span class="jj-led green"></span> Green = Light</span>
+              <span class="jj-chip"><span class="jj-led blue"></span> Blue = Medium</span>
+              <span class="jj-chip"><span class="jj-led red"></span> Red = Strong</span>
+            </div>
+            <p class="jj-sub-confirm">
+              → Save & activate with a <strong>short press on desired color</strong>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Important note on the right mouse button -->
+      <div class="jj-highlight" role="note">
+        <div class="jj-highlight-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          Important Note: How the Right Mouse Button Works
+        </div>
+        <ul>
+          <li><strong>With damping active (LED Red & Blue):</strong> Hold the right mouse button for <strong>0.5 to 1.5 seconds</strong> (after 0.5 sec, the cursor briefly twitches as confirmation) and then release – the right-click triggers on <strong>release</strong>. Shorter accidental clicks are filtered out.</li>
+          <li><strong>In Bypass mode (LED Green):</strong> The right mouse button responds immediately as usual with no hold time required.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 3. Tips & Tricks -->
+    <div class="jj-block" style="padding-bottom: 1rem;">
+      <div class="jj-block-header" style="margin-bottom: 0;">
+        <h2 class="jj-block-title">Tips for the Best Setup</h2>
+      </div>
+    </div>
+
+    <div class="jj-pillars">
+      <article class="jj-card">
+        <div class="jj-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" y1="21" x2="4" y2="14"></line>
+            <line x1="4" y1="10" x2="4" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12" y2="3"></line>
+            <line x1="20" y1="21" x2="20" y2="16"></line>
+            <line x1="20" y1="12" x2="20" y2="3"></line>
+            <line x1="1" y1="14" x2="7" y2="14"></line>
+            <line x1="9" y1="8" x2="15" y2="8"></line>
+            <line x1="17" y1="16" x2="23" y2="16"></line>
+          </svg>
+        </div>
+        <h3>Spring or 1-Euro Filter?</h3>
+        <p>The <strong>1-Euro Filter (Blue)</strong> adapts dynamically: it keeps the cursor steady while aiming, yet stays responsive across wide screen moves. The <strong>Spring Filter (Red)</strong> smooths evenly like a subtle counterweight.</p>
+      </article>
+
+      <article class="jj-card">
+        <div class="jj-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6" y="3" width="12" height="18" rx="6"></rect>
+            <line x1="12" y1="7" x2="12" y2="11"></line>
+          </svg>
+        </div>
+        <h3>Use the Right-Click Twitch</h3>
+        <p>No need to count seconds: press and hold the right mouse button and simply wait for the brief visual cursor twitch after half a second – then release right away.</p>
+      </article>
+
+      <article class="jj-card">
+        <div class="jj-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+            <line x1="12" y1="2" x2="12" y2="12"></line>
+          </svg>
+        </div>
+        <h3>Quick Bypass for Other Users</h3>
+        <p>If someone else briefly uses your computer or you need right-button drag-and-drop, a short press (< 2 sec) switches the filter to <strong>Green (Bypass)</strong> – and just as quickly back.</p>
+      </article>
+    </div>
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JitterJail</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sidebar-width: 280px;
+      --mobile-header-height: 68px;
+      --bg-gray: #d9d9d9;
+      --sidebar-gray: #c7c7c7;
+      --hover-gray: #b8b8b8;
+      --accent-color: #28969e;
+      --accent-glow: rgba(40, 150, 158, 0.45);
+      --text-color: #1a1a1a;
+      --kofi-color: #2f353b;
+      --kofi-hover: #1f2428;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--bg-gray);
+      color: var(--text-color);
+      display: flex;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+    }
+
+    /* Mobile header (hidden on desktop) */
+    .mobile-header {
+      display: none;
+    }
+
+    /* Dark backdrop when mobile menu is open */
+    .sidebar-backdrop {
+      display: none;
+    }
+
+    /* Left menu column spanning full height */
+    nav.sidebar {
+      position: relative;
+      width: var(--sidebar-width);
+      background: linear-gradient(180deg, #cccccc 0%, var(--sidebar-gray) 100%);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      height: 100%;
+      z-index: 20;
+      box-shadow: 6px 0 22px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Animated teal divider along right edge of menu column */
+    nav.sidebar::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 3px;
+      height: 100%;
+      background: linear-gradient(
+        180deg,
+        rgba(40, 150, 158, 0.15) 0%,
+        rgba(40, 150, 158, 0.85) 50%,
+        rgba(40, 150, 158, 0.15) 100%
+      );
+      background-size: 100% 200%;
+      animation: stabilizer-flow 5s ease-in-out infinite;
+    }
+
+    @keyframes stabilizer-flow {
+      0%, 100% { background-position: 0% 0%; }
+      50% { background-position: 0% 100%; }
+    }
+
+    /* Indicator node traveling along the divider */
+    .edge-node {
+      position: absolute;
+      right: -6px;
+      top: 0;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background-color: #ffffff;
+      border: 3px solid var(--accent-color);
+      box-shadow: 0 0 10px var(--accent-glow);
+      transform: translateY(-50%);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 30;
+      transition: top 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
+    }
+
+    /* Banner at top of menu column */
+    .sidebar-banner {
+      background-color: var(--sidebar-gray);
+      padding: 18px 16px 16px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .sidebar-banner img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.2s ease;
+    }
+
+    .sidebar-banner:hover img {
+      transform: scale(1.03);
+    }
+
+    /* Menu items container */
+    .menu-list {
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 14px;
+      text-decoration: none;
+      color: var(--text-color);
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.25);
+      border-left: 4px solid transparent;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .menu-item:hover {
+      background-color: var(--hover-gray);
+      transform: translateX(4px);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .menu-item:hover img {
+      transform: rotate(10deg) scale(1.12);
+    }
+
+    .menu-item.active {
+      background-color: #ffffff;
+      border-left: 4px solid var(--accent-color);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .menu-item.active img {
+      transform: scale(1.08);
+    }
+
+    .lang-flag {
+      width: 34px;
+      height: 24px;
+      border-radius: 4px;
+      flex-shrink: 0;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .lang-switch-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+      background-color: rgba(255, 255, 255, 0.45);
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .lang-switch-btn:hover {
+      background-color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .lang-switch-btn:hover .lang-flag {
+      transform: scale(1.08);
+    }
+
+    /* Highlighted Install button with extra top spacing */
+    .menu-item-install {
+      margin-top: 16px;
+      background: linear-gradient(135deg, var(--accent-color) 0%, #207b82 100%);
+      color: #ffffff;
+      box-shadow: 0 3px 10px rgba(40, 150, 158, 0.28);
+    }
+
+    .menu-item-install:hover {
+      background: linear-gradient(135deg, #2da6af 0%, #23868e 100%);
+      box-shadow: 0 5px 14px rgba(40, 150, 158, 0.38);
+    }
+
+    .menu-item-install.active {
+      background: #ffffff;
+      color: var(--accent-color);
+      border-left: 4px solid var(--accent-color);
+      box-shadow: 0 3px 10px rgba(40, 150, 158, 0.2);
+    }
+
+    .menu-item img {
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+      flex-shrink: 0;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* Footer at bottom of menu column with Ko-fi button */
+    .sidebar-footer {
+      padding: 14px 14px 18px 14px;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      background-color: rgba(255, 255, 255, 0.12);
+      flex-shrink: 0;
+    }
+
+    .kofi-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 12px 16px;
+      background-color: var(--kofi-color);
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+      transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .kofi-button:hover {
+      background-color: var(--kofi-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.24);
+    }
+
+    .kofi-button:active {
+      transform: translateY(0);
+    }
+
+    .kofi-button svg {
+      flex-shrink: 0;
+      transition: transform 0.25s ease;
+    }
+
+    .kofi-button:hover svg {
+      transform: rotate(-8deg) scale(1.08);
+    }
+
+    .kofi-hint {
+      margin-top: 7px;
+      text-align: center;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: rgba(26, 26, 26, 0.65);
+    }
+
+    /* Main content area on the right */
+    main.content {
+      position: relative;
+      flex: 1;
+      background-color: var(--bg-gray);
+      height: 100%;
+    }
+
+    main.content::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 18px;
+      height: 100%;
+      background: linear-gradient(90deg, rgba(0, 0, 0, 0.06) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    main.content iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* =========================================
+       MOBILE VIEW (Smartphones & small tablets)
+       ========================================= */
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      /* Show mobile top bar */
+      .mobile-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: var(--mobile-header-height);
+        padding: 8px 16px;
+        background-color: var(--sidebar-gray);
+        border-bottom: 2px solid var(--accent-color);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+        z-index: 40;
+        flex-shrink: 0;
+      }
+
+      .mobile-header-logo {
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+
+      .mobile-header-logo img {
+        max-height: 48px;
+        width: auto;
+        display: block;
+      }
+
+      /* Hamburger button */
+      .menu-toggle {
+        background: rgba(255, 255, 255, 0.35);
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        border-radius: 8px;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .menu-toggle span {
+        display: block;
+        width: 22px;
+        height: 2.5px;
+        background-color: var(--text-color);
+        border-radius: 2px;
+        transition: transform 0.25s ease, opacity 0.25s ease;
+      }
+
+      .menu-toggle.open span:nth-child(1) {
+        transform: translateY(7.5px) rotate(45deg);
+      }
+      .menu-toggle.open span:nth-child(2) {
+        opacity: 0;
+      }
+      .menu-toggle.open span:nth-child(3) {
+        transform: translateY(-7.5px) rotate(-45deg);
+      }
+
+      /* Backdrop behind open menu */
+      .sidebar-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.45);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        z-index: 90;
+      }
+
+      .sidebar-backdrop.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      /* Menu column becomes slide-out drawer */
+      nav.sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 270px;
+        max-width: 82vw;
+        height: 100dvh;
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        z-index: 100;
+      }
+
+      nav.sidebar.open {
+        transform: translateX(0);
+      }
+
+      /* Content frame uses full screen width */
+      main.content {
+        width: 100%;
+        height: calc(100dvh - var(--mobile-header-height));
+      }
+
+      main.content::before {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Mobile Header -->
+  <header class="mobile-header">
+    <a href="start.html" target="content-frame" class="mobile-header-logo" id="mobile-banner-link" title="Back to Home">
+      <img src="JitterJail_Banner_klein.png" alt="JitterJail Banner">
+    </a>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Open menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <!-- Backdrop for mobile menu -->
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+  <!-- Menu Column (Desktop left / Mobile slide-out drawer) -->
+  <nav class="sidebar" id="sidebar">
+    <a href="start.html" target="content-frame" class="sidebar-banner" id="banner-link" title="Back to Home">
+      <img src="JitterJail_Banner_klein.png" alt="JitterJail Banner">
+    </a>
+
+    <div class="menu-list" id="menu-list">
+      <a href="eng_menu1.html" target="content-frame" class="menu-item">
+        <img src="jitterjail_icon.png" alt="Menu Icon">
+        <span>What is JitterJail</span>
+      </a>
+      <a href="eng_menu1a.html" target="content-frame" class="menu-item">
+        <img src="jitterjail_icon.png" alt="Menu Icon">
+        <span>Getting Started</span>
+      </a>
+      <a href="eng_menu2.html" target="content-frame" class="menu-item">
+        <img src="jitterjail_icon.png" alt="Menu Icon">
+        <span>Usage & Guide</span>
+      </a>
+      <a href="eng_menu4.html" target="content-frame" class="menu-item">
+        <img src="jitterjail_icon.png" alt="Menu Icon">
+        <span>About Me</span>
+      </a>
+      <a href="eng_menu5.html" target="content-frame" class="menu-item">
+        <img src="jitterjail_icon.png" alt="Menu Icon">
+        <span>Legal</span>
+      </a>
+      <a href="eng_menu3.html" target="content-frame" class="menu-item menu-item-install">
+        <img src="jitterjail_icon.png" alt="Menu Icon">
+        <span>Install JitterJail</span>
+      </a>
+    </div>
+
+    <!-- Persistent donation button at bottom of menu column -->
+    <div class="sidebar-footer">
+      <a href="index.html" class="lang-switch-btn" id="de-view-link" title="Switch to German view">
+        <svg class="lang-flag" viewBox="0 0 34 24" aria-hidden="true">
+          <rect width="34" height="8" y="0" fill="#1a1a1a"/>
+          <rect width="34" height="8" y="8" fill="#dd0000"/>
+          <rect width="34" height="8" y="16" fill="#ffce00"/>
+        </svg>
+        <span>Deutsche Ansicht</span>
+      </a>
+      <a href="https://ko-fi.com/jitterjail" target="_blank" rel="noopener noreferrer" class="kofi-button" id="kofi-link">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M23.881 8.948c-.773-4.085-4.859-4.593-4.859-4.593H.723c-.604 0-.679.798-.679.798s-.082 7.324-.022 11.822c.164 2.424 2.586 2.672 2.586 2.672s8.267-.023 11.966-.049c2.438-.426 2.683-2.566 2.658-3.734 4.352.24 7.422-2.831 6.649-6.916zm-11.062 3.511c-1.246 1.453-4.011 3.976-4.011 3.976s-.121.119-.31.023c-.076-.057-.108-.09-.108-.09-.443-.441-3.368-3.049-4.034-3.954-.709-.965-1.041-2.7-.091-3.71.951-1.01 3.005-1.086 4.363.407 0 0 1.565-1.782 3.468-.963 1.904.82 1.832 3.011.723 4.311zm6.173.478c-.928.116-1.682.028-1.682.028V7.284h1.77s1.971.551 1.971 2.638c0 1.913-.985 2.667-2.059 3.015z"/>
+        </svg>
+        <span>Buy Me a Coffee</span>
+      </a>
+      <div class="kofi-hint">JitterJail is & stays free</div>
+    </div>
+
+    <!-- Connector node to content frame -->
+    <div class="edge-node" id="edge-node"></div>
+  </nav>
+
+  <!-- Content Area -->
+  <main class="content">
+    <iframe name="content-frame" src="start.html" title="Content area"></iframe>
+  </main>
+
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const menuItems = document.querySelectorAll('.menu-item');
+    const bannerLink = document.getElementById('banner-link');
+    const mobileBannerLink = document.getElementById('mobile-banner-link');
+    const deViewLink = document.getElementById('de-view-link');
+    const kofiLink = document.getElementById('kofi-link');
+    const edgeNode = document.getElementById('edge-node');
+    const menuToggle = document.getElementById('menu-toggle');
+    const backdrop = document.getElementById('sidebar-backdrop');
+
+    function openMobileMenu() {
+      sidebar.classList.add('open');
+      backdrop.classList.add('open');
+      menuToggle.classList.add('open');
+    }
+
+    function closeMobileMenu() {
+      sidebar.classList.remove('open');
+      backdrop.classList.remove('open');
+      menuToggle.classList.remove('open');
+    }
+
+    menuToggle.addEventListener('click', () => {
+      if (sidebar.classList.contains('open')) {
+        closeMobileMenu();
+      } else {
+        openMobileMenu();
+      }
+    });
+
+    backdrop.addEventListener('click', closeMobileMenu);
+    deViewLink.addEventListener('click', closeMobileMenu);
+    kofiLink.addEventListener('click', closeMobileMenu);
+
+    function moveNodeToItem(item) {
+      const sidebarRect = sidebar.getBoundingClientRect();
+      const itemRect = item.getBoundingClientRect();
+      const centerY = itemRect.top - sidebarRect.top + (itemRect.height / 2);
+      edgeNode.style.top = `${centerY}px`;
+      edgeNode.style.opacity = '1';
+    }
+
+    menuItems.forEach(item => {
+      item.addEventListener('click', () => {
+        menuItems.forEach(el => el.classList.remove('active'));
+        item.classList.add('active');
+        moveNodeToItem(item);
+        closeMobileMenu();
+      });
+    });
+
+    function resetToStart() {
+      menuItems.forEach(el => el.classList.remove('active'));
+      edgeNode.style.opacity = '0';
+      closeMobileMenu();
+    }
+
+    bannerLink.addEventListener('click', resetToStart);
+    mobileBannerLink.addEventListener('click', resetToStart);
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        closeMobileMenu();
+      }
+      const activeItem = document.querySelector('.menu-item.active');
+      if (activeItem) moveNodeToItem(activeItem);
+    });
+  </script>
+<script data-goatcounter="https://jitterjail.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
