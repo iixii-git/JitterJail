@@ -348,10 +348,10 @@
         display: block;
       }
 
-      /* Hamburger button */
+      /* Glowing hamburger button */
       .menu-toggle {
-        background: rgba(255, 255, 255, 0.35);
-        border: 1px solid rgba(0, 0, 0, 0.12);
+        background: rgba(255, 255, 255, 0.75);
+        border: 2px solid var(--accent-color);
         border-radius: 8px;
         width: 44px;
         height: 44px;
@@ -362,6 +362,25 @@
         gap: 5px;
         cursor: pointer;
         -webkit-tap-highlight-color: transparent;
+        animation: hamburger-glow 2.2s ease-in-out infinite;
+      }
+
+      /* Stop pulsing once the menu is open */
+      .menu-toggle.open {
+        animation: none;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 0 0 3px rgba(40, 150, 158, 0.25);
+      }
+
+      @keyframes hamburger-glow {
+        0%, 100% {
+          box-shadow: 0 0 6px rgba(40, 150, 158, 0.45), 0 0 0 0 rgba(40, 150, 158, 0.4);
+          transform: scale(1);
+        }
+        50% {
+          box-shadow: 0 0 16px rgba(40, 150, 158, 0.9), 0 0 0 5px rgba(40, 150, 158, 0.18);
+          transform: scale(1.05);
+        }
       }
 
       .menu-toggle span {
@@ -433,7 +452,7 @@
 
   <!-- Mobile Header -->
   <header class="mobile-header">
-    <a href="start.html" target="content-frame" class="mobile-header-logo" id="mobile-banner-link" title="Back to Home">
+    <a href="eng_start.html" target="content-frame" class="mobile-header-logo" id="mobile-banner-link" title="Back to Home">
       <img src="JitterJail_Banner_klein.png" alt="JitterJail Banner">
     </a>
     <button class="menu-toggle" id="menu-toggle" aria-label="Open menu">
@@ -448,7 +467,7 @@
 
   <!-- Menu Column (Desktop left / Mobile slide-out drawer) -->
   <nav class="sidebar" id="sidebar">
-    <a href="start.html" target="content-frame" class="sidebar-banner" id="banner-link" title="Back to Home">
+    <a href="eng_start.html" target="content-frame" class="sidebar-banner" id="banner-link" title="Back to Home">
       <img src="JitterJail_Banner_klein.png" alt="JitterJail Banner">
     </a>
 
@@ -463,7 +482,7 @@
       </a>
       <a href="eng_menu2.html" target="content-frame" class="menu-item">
         <img src="jitterjail_icon.png" alt="Menu Icon">
-        <span>Usage & Guide</span>
+        <span>Usage &amp; Guide</span>
       </a>
       <a href="eng_menu4.html" target="content-frame" class="menu-item">
         <img src="jitterjail_icon.png" alt="Menu Icon">
@@ -495,7 +514,7 @@
         </svg>
         <span>Buy Me a Coffee</span>
       </a>
-      <div class="kofi-hint">JitterJail is & stays free</div>
+      <div class="kofi-hint">JitterJail is &amp; stays free</div>
     </div>
 
     <!-- Connector node to content frame -->
@@ -504,7 +523,7 @@
 
   <!-- Content Area -->
   <main class="content">
-    <iframe name="content-frame" src="start.html" title="Content area"></iframe>
+    <iframe name="content-frame" src="eng_start.html" title="Content area"></iframe>
   </main>
 
   <script>
