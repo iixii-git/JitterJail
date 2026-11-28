@@ -126,9 +126,43 @@
 
     .jj-flash-box > p {
       max-width: 560px;
-      margin: 0 auto 1.5rem;
+      margin: 0 auto 1.25rem;
       font-size: 0.98rem;
       color: var(--jj-text-muted);
+    }
+
+    /* Board selector */
+    .jj-target-picker {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.45rem;
+      margin-bottom: 1.35rem;
+    }
+
+    .jj-target-label {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--jj-accent);
+    }
+
+    .jj-target-select {
+      min-width: min(100%, 340px);
+      padding: 0.65rem 1rem;
+      font-family: inherit;
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--jj-accent);
+      background-color: var(--jj-surface);
+      border: 1px solid #93c5fd;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+    }
+
+    .jj-target-select:focus {
+      outline: 2px solid var(--jj-primary);
+      outline-offset: 2px;
     }
 
     esp-web-install-button {
@@ -387,7 +421,7 @@
         </p>
 
         <p>
-          Simply connect your <strong>M5Stack (ESP32-S3)</strong> to your computer via USB and start the transfer with a single click. Your browser handles the entire flashing process automatically in under a minute.
+          Simply select your <strong>M5Stack (ESP32-S3)</strong> model, connect it to your computer via USB, and start the transfer with a single click. Your browser handles the entire flashing process automatically in under a minute.
         </p>
       </div>
     </div>
@@ -402,10 +436,19 @@
         </div>
         <h2>Ready to Install</h2>
         <p>
-          Make sure your M5Stack is connected with a USB data cable, then select the matching serial port in the next step.
+          Select your M5Stack model, make sure it is connected with a USB data cable, then select the matching serial port in the next step.
         </p>
 
-        <!-- ESP Web Tools Button (uses your manifest.json in the same directory) -->
+        <!-- Board Selection -->
+        <div class="jj-target-picker">
+          <label for="jj-board-select" class="jj-target-label">Select Target Hardware</label>
+          <select id="jj-board-select" class="jj-target-select">
+            <option value="manifest.json" selected>M5Stack S3 STAMP</option>
+            <option value="manifest_atom.json">M5Stack S3 ATOM</option>
+          </select>
+        </div>
+
+        <!-- ESP Web Tools Button -->
         <esp-web-install-button id="jj-installer" manifest="manifest.json">
           <button slot="activate" class="jj-btn-flash">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -443,8 +486,8 @@
             <path d="M12 16v6"></path>
           </svg>
         </div>
-        <h3>1. Connect via USB</h3>
-        <p>Plug your M5Stack into your PC using a full USB data cable (not a charge-only cable).</p>
+        <h3>1. Select & Connect</h3>
+        <p>Pick your M5Stack model and plug it into your PC using a full USB data cable (not a charge-only cable).</p>
       </article>
 
       <article class="jj-card">
@@ -507,10 +550,26 @@
       const closeBtn = document.getElementById('jj-kofi-close');
       const skipBtn = document.getElementById('jj-kofi-skip');
       const installer = document.getElementById('jj-installer');
+      const boardSelect = document.getElementById('jj-board-select');
 
       let modalShownForCurrentRun = false;
       let flashSucceeded = false;
       let flashInProgress = false;
+
+      function applySelectedManifest() {
+        if (!boardSelect || !installer) return;
+        const resolvedUrl = new URL(boardSelect.value, window.location.href).href;
+        installer.manifest = resolvedUrl;
+        installer.setAttribute('manifest', resolvedUrl);
+        modalShownForCurrentRun = false;
+        flashSucceeded = false;
+        flashInProgress = false;
+      }
+
+      if (boardSelect && installer) {
+        applySelectedManifest();
+        boardSelect.addEventListener('change', applySelectedManifest);
+      }
 
       function openKofiModal() {
         if (modalShownForCurrentRun) return;
