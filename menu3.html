@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JitterJail installieren – Web-Flasher</title>
-  <!-- ESP Web Tools Bibliothek -->
+  <title>Install JitterJail – Web Flasher</title>
+  <!-- ESP Web Tools Library -->
   <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
   <style>
     :root {
@@ -92,7 +92,7 @@
       margin-bottom: 0;
     }
 
-    /* Flash-Box */
+    /* Flash box */
     .jj-flash-wrapper {
       padding: 0 2.75rem 2.25rem;
     }
@@ -126,9 +126,43 @@
 
     .jj-flash-box > p {
       max-width: 560px;
-      margin: 0 auto 1.5rem;
+      margin: 0 auto 1.25rem;
       font-size: 0.98rem;
       color: var(--jj-text-muted);
+    }
+
+    /* Board selector */
+    .jj-target-picker {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.45rem;
+      margin-bottom: 1.35rem;
+    }
+
+    .jj-target-label {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--jj-accent);
+    }
+
+    .jj-target-select {
+      min-width: min(100%, 340px);
+      padding: 0.65rem 1rem;
+      font-family: inherit;
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--jj-accent);
+      background-color: var(--jj-surface);
+      border: 1px solid #93c5fd;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+    }
+
+    .jj-target-select:focus {
+      outline: 2px solid var(--jj-primary);
+      outline-offset: 2px;
     }
 
     esp-web-install-button {
@@ -181,7 +215,7 @@
       max-width: 540px;
     }
 
-    /* Drei Schritt-Karten */
+    /* Three step cards */
     .jj-pillars {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -227,7 +261,7 @@
       line-height: 1.55;
     }
 
-    /* Natives Ko-fi Popup (<dialog>) im Top-Layer */
+    /* Native Ko-fi popup (<dialog>) in top layer */
     dialog.jj-modal {
       margin: auto;
       padding: 0;
@@ -379,20 +413,20 @@
   <section class="jitterjail-section" aria-labelledby="jj-flash-heading">
     <div class="jj-intro">
       <div class="jj-story">
-        <span class="jj-badge">Firmware & Web-Installer</span>
-        <h1 id="jj-flash-heading" class="jj-title">JitterJail auf deinen M5Stack flashen</h1>
+        <span class="jj-badge">Firmware & Web Installer</span>
+        <h1 id="jj-flash-heading" class="jj-title">Flash JitterJail to Your ESP32</h1>
 
         <p class="jj-lead">
-          Installiere die aktuelle JitterJail-Firmware direkt aus deinem Browser heraus – ganz ohne Entwicklungsumgebung, Kommandozeile oder zusätzliche Programme.
+          Install the latest JitterJail firmware directly from your browser – with no development environment, command line, or extra tools required.
         </p>
 
         <p>
-          Verbinde einfach deinen <strong>M5Stack (ESP32-S3)</strong> per USB  mit deinem Computer und starte die Übertragung per Klick. Der Browser übernimmt den kompletten Flash-Vorgang automatisch in weniger als einer Minute.
+          Simply select your board, connect your <strong>ESP32 / M5Stack</strong> to your computer via USB, and start the transfer with a single click. Your browser handles the entire flashing process automatically in under a minute.
         </p>
       </div>
     </div>
 
-    <!-- Interaktiver ESP Web Flash Bereich -->
+    <!-- Interactive ESP Web Flash Section -->
     <div class="jj-flash-wrapper">
       <div class="jj-flash-box">
         <div class="jj-flash-icon" aria-hidden="true">
@@ -400,12 +434,21 @@
             <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
           </svg>
         </div>
-        <h2>Bereit zur Installation</h2>
+        <h2>Ready to Install</h2>
         <p>
-          Stelle sicher, dass dein M5Stack per USB-Datenkabel angeschlossen ist, und wähle im nächsten Schritt den entsprechenden seriellen Port aus.
+          Choose your ESP32 board, connect it with a USB data cable, then select the matching serial port in the next step.
         </p>
 
-        <!-- ESP Web Tools Button (nutzt deine manifest.json im selben Verzeichnis) -->
+        <!-- Board Selection -->
+        <div class="jj-target-picker">
+          <label for="jj-board-select" class="jj-target-label">Select Target Board</label>
+          <select id="jj-board-select" class="jj-target-select">
+            <option value="manifest.json" selected>M5Stack S3 STAMP</option>
+            <option value="manifest_atom.json">M5Stack S3 ATOM</option>
+          </select>
+        </div>
+
+        <!-- ESP Web Tools Button -->
         <esp-web-install-button id="jj-installer" manifest="manifest.json">
           <button slot="activate" class="jj-btn-flash">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -413,25 +456,25 @@
               <polyline points="7 10 12 15 17 10"></polyline>
               <line x1="12" y1="15" x2="12" y2="3"></line>
             </svg>
-            JitterJail jetzt flashen
+            Flash JitterJail Now
           </button>
 
           <span slot="unsupported" class="jj-unsupported-msg">
-            Dein aktueller Browser unterstützt Web Serial leider nicht. Bitte öffne diese Seite mit <strong>Google Chrome</strong>, <strong>Microsoft Edge</strong> oder <strong>Opera</strong>.
+            Your current browser does not support Web Serial. Please open this page in <strong>Google Chrome</strong>, <strong>Microsoft Edge</strong>, or <strong>Opera</strong>.
           </span>
 
           <span slot="not-allowed" class="jj-unsupported-msg">
-            Der Web-Flasher funktioniert aus Sicherheitsgründen nur über eine verschlüsselte <strong>HTTPS-Verbindung</strong>.
+            For security reasons, the web flasher only works over an encrypted <strong>HTTPS connection</strong>.
           </span>
         </esp-web-install-button>
 
         <div class="jj-browser-hint">
-          Unterstützte Browser: Chrome, Edge & Opera (Desktop)
+          Supported browsers: Chrome, Edge & Opera (Desktop)
         </div>
       </div>
     </div>
 
-    <!-- Drei Schritt-Karten -->
+    <!-- Three Step Cards -->
     <div class="jj-pillars">
       <article class="jj-card">
         <div class="jj-icon" aria-hidden="true">
@@ -443,8 +486,8 @@
             <path d="M12 16v6"></path>
           </svg>
         </div>
-        <h3>1. USB verbinden</h3>
-        <p>Stecke deinen M5Stack mit einem vollwertigen USB-Datenkabel (kein reines Ladekabel) an deinen PC an.</p>
+        <h3>1. Select & Connect</h3>
+        <p>Pick your ESP32 board and plug it into your PC using a full USB data cable (not a charge-only cable).</p>
       </article>
 
       <article class="jj-card">
@@ -454,8 +497,8 @@
             <polyline points="9 11 12 14 22 4"></polyline>
           </svg>
         </div>
-        <h3>2. Port wählen & flashen</h3>
-        <p>Klicke auf „JitterJail jetzt flashen“, wähle den angezeigten USB-Serial-Port aus und bestätige die Installation.</p>
+        <h3>2. Pick Port & Flash</h3>
+        <p>Click “Flash JitterJail Now”, select the listed USB serial port, and confirm the installation.</p>
       </article>
 
       <article class="jj-card">
@@ -464,39 +507,39 @@
             <path d="M6.5 6.5l11 11L12 23V1l5.5 5.5-11 11"></path>
           </svg>
         </div>
-        <h3>3. Bluetooth-Maus koppeln</h3>
-        <p>Nach dem Abschluss startet der Controller neu. Verbinde deine Bluetooth-Maus und genieße ruhige Mausbewegungen.</p>
+        <h3>3. Pair Bluetooth Mouse</h3>
+        <p>Once finished, the controller reboots. Connect your Bluetooth mouse and enjoy smooth cursor movement.</p>
       </article>
     </div>
   </section>
 
-  <!-- Natives Ko-fi Popup nach erfolgreichem Flashvorgang -->
+  <!-- Native Ko-fi Popup after successful flash -->
   <dialog id="jj-kofi-modal" class="jj-modal" aria-labelledby="jj-kofi-title">
     <div class="jj-modal-content">
-      <button type="button" class="jj-modal-close" id="jj-kofi-close" aria-label="Fenster schließen">×</button>
+      <button type="button" class="jj-modal-close" id="jj-kofi-close" aria-label="Close window">×</button>
 
       <div class="jj-modal-badge">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <polyline points="20 6 9 17 4 12"></polyline>
         </svg>
-        Flashvorgang abgeschlossen!
+        Flashing Complete!
       </div>
 
-      <h2 id="jj-kofi-title">Viel Freude mit JitterJail!</h2>
+      <h2 id="jj-kofi-title">Enjoy Using JitterJail!</h2>
 
       <p>
-        Deine Firmware ist jetzt einsatzbereit. JitterJail ist und bleibt für alle komplett kostenlos. Wenn dir dieses Projekt den Alltag am PC erleichtert, freue ich mich riesig über einen kleinen Kaffee auf Ko-fi!
+        Your firmware is now ready to go. JitterJail is and will remain completely free for everyone. If this project makes your everyday PC use easier, I'd love a small coffee on Ko-fi!
       </p>
 
       <a href="https://ko-fi.com/jitterjail" target="_blank" rel="noopener noreferrer" class="jj-kofi-btn">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path d="M23.881 8.948c-.773-4.085-4.859-4.593-4.859-4.593H.723c-.604 0-.679.798-.679.798s-.082 7.324-.022 11.822c.164 2.424 2.586 2.672 2.586 2.672s8.267-.023 11.966-.049c2.438-.426 2.683-2.566 2.658-3.734 4.352.24 7.422-2.831 6.649-6.916zm-11.062 3.511c-1.246 1.453-4.011 3.976-4.011 3.976s-.121.119-.31.023c-.076-.057-.108-.09-.108-.09-.443-.441-3.368-3.049-4.034-3.954-.709-.965-1.041-2.7-.091-3.71.951-1.01 3.005-1.086 4.363.407 0 0 1.565-1.782 3.468-.963 1.904.82 1.832 3.011.723 4.311zm6.173.478c-.928.116-1.682.028-1.682.028V7.284h1.77s1.971.551 1.971 2.638c0 1.913-.985 2.667-2.059 3.015z"/>
         </svg>
-        Stephan auf Ko-fi unterstützen
+        Support Stephan on Ko-fi
       </a>
 
       <button type="button" class="jj-modal-skip" id="jj-kofi-skip">
-        Vielleicht später
+        Maybe later
       </button>
     </div>
   </dialog>
@@ -507,10 +550,20 @@
       const closeBtn = document.getElementById('jj-kofi-close');
       const skipBtn = document.getElementById('jj-kofi-skip');
       const installer = document.getElementById('jj-installer');
+      const boardSelect = document.getElementById('jj-board-select');
 
       let modalShownForCurrentRun = false;
       let flashSucceeded = false;
       let flashInProgress = false;
+
+      if (boardSelect && installer) {
+        boardSelect.addEventListener('change', function () {
+          installer.setAttribute('manifest', boardSelect.value);
+          modalShownForCurrentRun = false;
+          flashSucceeded = false;
+          flashInProgress = false;
+        });
+      }
 
       function openKofiModal() {
         if (modalShownForCurrentRun) return;
@@ -536,7 +589,6 @@
         if (e.target === modal) closeKofiModal();
       });
 
-      // Liest rekursiv alle verschachtelten Shadow-DOMs sowie label-/aria-label-Attribute aus
       function inspectDialog(root) {
         if (!root) return '';
         let collected = '';
@@ -593,7 +645,6 @@
 
         if (isDone && !hasError) {
           flashSucceeded = true;
-          // 1,2 Sekunden warten, damit der grüne Haken im ESP-Dialog kurz sichtbar bleibt
           setTimeout(openKofiModal, 1200);
         }
       }
@@ -611,7 +662,6 @@
         });
       }
 
-      // Überwacht den ESP-Installationsdialog auf Abschluss & Schließen
       const bodyObserver = new MutationObserver(function (mutations) {
         for (const mutation of mutations) {
           for (const node of mutation.addedNodes) {

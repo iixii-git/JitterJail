@@ -1,0 +1,12 @@
+{
+  "name": "JitterJail Firmware",
+  "version": "0.9.4",
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        { "path": "JitterJail_factory.atom.bin", "offset": 0 }
+      ]
+    }
+  ]
+}
