@@ -5,7 +5,7 @@
     {
       "chipFamily": "ESP32-S3",
       "parts": [
-        { "path": "JitterJail_factory.atom.bin", "offset": 0 }
+        { "path": "JitterJail_factory_atom.bin", "offset": 0 }
       ]
     }
   ]
